@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet,ImageStyle } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import COLORS from "../../constants/theme";
 const text={
@@ -68,7 +68,8 @@ const styles = StyleSheet.create({
                
     },
     errorMessage:{
-        color:Colors.red,
+        ...text,
+        color:'red',
         fontSize:12,
         marginTop:5,
         marginLeft:5,

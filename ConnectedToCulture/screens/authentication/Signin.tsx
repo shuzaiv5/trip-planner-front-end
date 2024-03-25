@@ -4,6 +4,22 @@ import styles from './authentication.style'
 import globalStylesAndRowWithSpace from '../../constants/global.style';
 import COLORS from '../../constants/theme';
 import CheckBox from '@react-native-community/checkbox';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+
+interface FormModel{
+    userName:string,
+    password:string,
+}
+const validationSchema=Yup.object().shape({
+    userName:Yup.string()
+    .min(3,"Username must be 3 chracters")
+    .required('Required'),
+     password:Yup.string()
+    .min(8,"Password must be 8 chracters")
+    .required('Required'),
+        
+  })
 
 const { globalStyles, rowWithSpace } = globalStylesAndRowWithSpace;
 
@@ -20,17 +36,51 @@ const Signin = ({navigation}: {navigation: any}) => {
         <View style={[styles.logoContainer,{marginBottom:40}]}>
             <Image style={styles.logo} source={require('../../assets/images/logos/c2cBlack.png')}/>
         </View>  
-
+        <Formik <FormModel>
+        initialValues={{
+            userName:'',
+            password:'',
+        }}
+        validationSchema={validationSchema}
+        onSubmit={()=>navigation.navigate('Welcome') }>
+        {({  handleChange,
+              touched,
+              handleSubmit,
+              values,
+              errors,
+              setFieldTouched})=>(    
+        <>
     <View style={styles.wrapper}>
     
     <View>
-    <TextInput style={styles.inputWrapper} placeholder='Username' placeholderTextColor={'#B7B7B7'}></TextInput>
+    <TextInput style={styles.inputWrapper} placeholder='Username' placeholderTextColor={'#B7B7B7'}
+     onFocus={()=>setFieldTouched('userName')}
+     onBlur={()=>setFieldTouched('userName')}
+     value={values.userName}
+     onChangeText={handleChange('userName')}
+     autoCapitalize='none'
+     autoCorrect={false}></TextInput>
     </View>
+    {touched.userName && errors.userName && (
+              <Text style={styles.errorMessage}>{errors.userName}</Text>
+            )}
     </View>
        
     <View style={[styles.wrapper,{marginBottom:3}]}>
-    <TextInput style={styles.inputWrapper} placeholder='Password' placeholderTextColor={'#B7B7B7'}></TextInput>
+   <View>
+   <TextInput style={styles.inputWrapper} placeholder='Password' placeholderTextColor={'#B7B7B7'}
+    onFocus={()=>setFieldTouched('password')}
+    onBlur={()=>setFieldTouched('password')}
+    value={values.password}
+    onChangeText={handleChange('password')}
+    autoCapitalize='none'
+    autoCorrect={false}></TextInput>
+   </View>
+   {touched.password && errors.password && (
+              <Text style={styles.errorMessage}>{errors.password}</Text>
+            )}
     </View>
+   
     
     <View style={styles.wrapper}>
     <View style={styles.checkboxContainer}>
@@ -86,7 +136,9 @@ const Signin = ({navigation}: {navigation: any}) => {
         <Text  style={[styles.linkText,{marginTop:0,marginLeft:5}]} >Create New Account</Text>
        </TouchableOpacity>
     </View>
-    
+    </>
+    )}
+  </Formik>
   </View>
   )
 }

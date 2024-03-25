@@ -5,6 +5,7 @@ import styles from './authentication.style';
 import COLORS from '../../constants/theme';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { FormikValues, FormikHelpers } from 'formik';
 
 interface FormModel{
     userName:string,
@@ -12,10 +13,32 @@ interface FormModel{
     password:string,
     verifyPassword:string,
 }
-
+const validationSchema=Yup.object().shape({
+    userName:Yup.string()
+    .min(3,"Username must be 3 chracters")
+    .required('Required'),
+    email:Yup.string()
+    .email('Provide a valid email')
+    .required('Reuired'),
+    password:Yup.string()
+    .min(8,"Password must be 8 chracters")
+    .required('Required'),
+    verifyPassword:Yup.string()
+    .oneOf([Yup.ref('password'), ""], 'Must match "password" field value')
+    
+  })
+  
 const { globalStyles, rowWithSpace } = globalStylesAndRowWithSpace;
 
 const CreateAccount = ({navigation}: {navigation: any}) => {
+    const handleSubmit =  (values: FormModel, { resetForm, setSubmitting }: FormikHelpers<FormModel>) => {
+       
+          Alert.alert('Form Submitted', JSON.stringify(values, null, 2));
+          resetForm();
+          setSubmitting(false);
+        
+      };
+    
   return (
     <View style={[styles.container]}>
         <View style={styles.wrapper}>
@@ -32,48 +55,84 @@ const CreateAccount = ({navigation}: {navigation: any}) => {
             verifyPassword:'',
 
     }}
-    onSubmit={(values)=>{
-        console.log(JSON.stringify(values))
-        
-    }}>
-    {({handleSubmit,values,handleChange})=>(    
+    validationSchema={validationSchema}
+    onSubmit={handleSubmit}>
+    {({  handleChange,
+          touched,
+          handleSubmit,
+          values,
+          errors,
+          isValid,
+          setFieldTouched})=>(    
         <>
         <View style={styles.wrapper}>
         
         <View>
         <TextInput style={styles.inputWrapper} placeholder='Username' placeholderTextColor={'#B7B7B7'}
-        value={values.userName} onChange={handleChange}
+         onFocus={()=>setFieldTouched('userName')}
+         onBlur={()=>setFieldTouched('userName')}
+         value={values.userName}
+         onChangeText={handleChange('userName')}
+         autoCapitalize='none'
+         autoCorrect={false}
         ></TextInput>
     
         </View>
+        {touched.userName && errors.userName && (
+              <Text style={styles.errorMessage}>{errors.userName}</Text>
+            )}
         </View>
         <View style={styles.wrapper}>
     
         <View>
         <TextInput style={styles.inputWrapper} placeholder='Email' placeholderTextColor={'#B7B7B7'}
-           value={values.email} onChange={handleChange}></TextInput>
+            onFocus={()=>setFieldTouched('email')}
+            onBlur={()=>setFieldTouched('email',true)}
+            value={values.email}
+            onChangeText={handleChange('email')}
+            autoCapitalize='none'
+            autoCorrect={false}></TextInput>
     
         </View>
+        {touched.email && errors.email && (
+              <Text style={styles.errorMessage}>{errors.email}</Text>
+            )}
         </View>
         <View>
     
         <View style={styles.wrapper}>
         <TextInput style={styles.inputWrapper} placeholder='Password' placeholderTextColor={'#B7B7B7'}
-        value={values.password} onChange={handleChange}></TextInput>
+        onFocus={()=>setFieldTouched('password')}
+        onBlur={()=>setFieldTouched('password')}
+        value={values.password}
+        onChangeText={handleChange('password')}
+        autoCapitalize='none'
+        autoCorrect={false}
+        ></TextInput>
         </View>
+        {touched.password && errors.password && (
+              <Text style={styles.errorMessage}>{errors.password}</Text>
+            )}
         </View>
         <View>
     
         <View style={styles.wrapper}>
         <TextInput style={styles.inputWrapper} placeholder='Verify Password' placeholderTextColor={'#B7B7B7'}
-        value={values.verifyPassword} onChange={handleChange}></TextInput>
+         onFocus={()=>setFieldTouched('verifyPassword')}
+         onBlur={()=>setFieldTouched('verifyPassword')}
+         value={values.verifyPassword}
+         onChangeText={handleChange('verifyPassword')}
+         autoCapitalize='none'></TextInput>
         </View>
+        {touched.verifyPassword && errors.verifyPassword && (
+              <Text style={styles.errorMessage}>{errors.verifyPassword}</Text>
+            )}
         </View>
         
         <View style={styles.wrapper}>
         <TouchableOpacity
         style={globalStyles.fullWidthBtnBlack}
-        onPress={()=>handleSubmit} >
+        onPress={handleSubmit} >
             <Text  style={[styles.buttonText]} >CREATE NEW ACCOUNT</Text>
         </TouchableOpacity>
     </View>

@@ -12,14 +12,15 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import Signin from './screens/authentication/Signin';
 import { CreateAccount, Login, Welcome } from './screens';
+import { StatusBar } from 'react-native';
 
 function App(): React.JSX.Element {
 
   const Stack=createNativeStackNavigator();
   return (
+    
   <NavigationContainer>
     <Stack.Navigator>
-      <Stack.Screen name='Login' component={Login} options={{headerShown:false}} />
       <Stack.Screen name='CreateAccount' component={CreateAccount} options={{headerShown:false}} />
       <Stack.Screen name='Signin' component={Signin} options={{headerShown:false}} />
       <Stack.Screen name='Welcome' component={Welcome} options={{headerShown:false}} />
