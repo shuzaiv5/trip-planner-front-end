@@ -36,7 +36,7 @@ const Signin = ({navigation}: {navigation: any}) => {
         <View style={[styles.logoContainer,{marginBottom:40}]}>
             <Image style={styles.logo} source={require('../../assets/images/logos/c2cBlack.png')}/>
         </View>  
-        <Formik <FormModel>
+        <Formik<FormModel>
         initialValues={{
             userName:'',
             password:'',

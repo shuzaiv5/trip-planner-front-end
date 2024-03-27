@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity,Image, Alert } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity,Image, Alert, Dimensions } from 'react-native'
 import React from 'react'
 import globalStylesAndRowWithSpace from '../../constants/global.style';
 import styles from './authentication.style';
@@ -6,6 +6,9 @@ import COLORS from '../../constants/theme';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { FormikValues, FormikHelpers } from 'formik';
+
+// Get the dimensions of the screen
+const windowHeight = Dimensions.get('window').height;
 
 interface FormModel{
     userName:string,
@@ -19,7 +22,7 @@ const validationSchema=Yup.object().shape({
     .required('Required'),
     email:Yup.string()
     .email('Provide a valid email')
-    .required('Reuired'),
+    .required('Required'),
     password:Yup.string()
     .min(8,"Password must be 8 chracters")
     .required('Required'),
@@ -47,7 +50,7 @@ const CreateAccount = ({navigation}: {navigation: any}) => {
         <View style={styles.logoContainer}>
             <Image style={styles.logo} source={require('../../assets/images/logos/c2cBlack.png')}/>
         </View>  
-    <Formik <FormModel>
+    <Formik<FormModel>
         initialValues={{
             userName:'',
             email:'',
@@ -67,20 +70,19 @@ const CreateAccount = ({navigation}: {navigation: any}) => {
         <>
         <View style={styles.wrapper}>
         
-        <View>
-        <TextInput style={styles.inputWrapper} placeholder='Username' placeholderTextColor={'#B7B7B7'}
-         onFocus={()=>setFieldTouched('userName')}
-         onBlur={()=>setFieldTouched('userName')}
-         value={values.userName}
-         onChangeText={handleChange('userName')}
-         autoCapitalize='none'
-         autoCorrect={false}
-        ></TextInput>
-    
-        </View>
-        {touched.userName && errors.userName && (
-              <Text style={styles.errorMessage}>{errors.userName}</Text>
-            )}
+            <View>
+                <TextInput style={styles.inputWrapper} placeholder='Username' placeholderTextColor={'#B7B7B7'}
+                onFocus={()=>setFieldTouched('userName')}
+                onBlur={()=>setFieldTouched('userName')}
+                value={values.userName}
+                onChangeText={handleChange('userName')}
+                autoCapitalize='none'
+                autoCorrect={false}
+                />
+            </View >
+            {touched.userName && errors.userName && (
+                <Text style={styles.errorMessage}>{errors.userName}</Text>
+                )}
         </View>
         <View style={styles.wrapper}>
     
@@ -99,30 +101,28 @@ const CreateAccount = ({navigation}: {navigation: any}) => {
             )}
         </View>
         <View>
-    
-        <View style={styles.wrapper}>
-        <TextInput style={styles.inputWrapper} placeholder='Password' placeholderTextColor={'#B7B7B7'}
-        onFocus={()=>setFieldTouched('password')}
-        onBlur={()=>setFieldTouched('password')}
-        value={values.password}
-        onChangeText={handleChange('password')}
-        autoCapitalize='none'
-        autoCorrect={false}
-        ></TextInput>
-        </View>
-        {touched.password && errors.password && (
-              <Text style={styles.errorMessage}>{errors.password}</Text>
-            )}
+            <View style={styles.wrapper}>
+                <TextInput style={styles.inputWrapper} placeholder='Password' placeholderTextColor={'#B7B7B7'}
+                onFocus={()=>setFieldTouched('password')}
+                onBlur={()=>setFieldTouched('password')}
+                value={values.password}
+                onChangeText={handleChange('password')}
+                autoCapitalize='none'
+                autoCorrect={false}/>
+            </View>
+            {touched.password && errors.password && (
+                <Text style={styles.errorMessage}>{errors.password}</Text>
+                )}
         </View>
         <View>
     
         <View style={styles.wrapper}>
-        <TextInput style={styles.inputWrapper} placeholder='Verify Password' placeholderTextColor={'#B7B7B7'}
-         onFocus={()=>setFieldTouched('verifyPassword')}
-         onBlur={()=>setFieldTouched('verifyPassword')}
-         value={values.verifyPassword}
-         onChangeText={handleChange('verifyPassword')}
-         autoCapitalize='none'></TextInput>
+            <TextInput style={styles.inputWrapper} placeholder='Verify Password' placeholderTextColor={'#B7B7B7'}
+            onFocus={()=>setFieldTouched('verifyPassword')}
+            onBlur={()=>setFieldTouched('verifyPassword')}
+            value={values.verifyPassword}
+            onChangeText={handleChange('verifyPassword')}
+            autoCapitalize='none'/>
         </View>
         {touched.verifyPassword && errors.verifyPassword && (
               <Text style={styles.errorMessage}>{errors.verifyPassword}</Text>
@@ -130,16 +130,16 @@ const CreateAccount = ({navigation}: {navigation: any}) => {
         </View>
         
         <View style={styles.wrapper}>
-        <TouchableOpacity
-        style={globalStyles.fullWidthBtnBlack}
-        onPress={handleSubmit} >
-            <Text  style={[styles.buttonText]} >CREATE NEW ACCOUNT</Text>
-        </TouchableOpacity>
+            <TouchableOpacity
+            style={globalStyles.fullWidthBtnBlack}
+            onPress={() => handleSubmit()} >
+                <Text style={[styles.buttonText]} >CREATE NEW ACCOUNT</Text>
+            </TouchableOpacity>
     </View>
     </>
     )}
   </Formik>
-  <View style={[styles.wrapper,{alignItems:'center',padding:10}]}>
+  <View style={[styles.wrapper, {alignItems:'center', padding: windowHeight * 0.01}]}>
             <Text style={{color:COLORS.black}}>Or Sign In As</Text>
         </View>
         <View style={[rowWithSpace('space-around')]}>
