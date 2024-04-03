@@ -146,20 +146,20 @@ const CreateAccount = ({navigation}: {navigation: any}) => {
         <TouchableOpacity
         style={styles.loginBtns} 
         onPress={()=>navigation.navigate('Signin')}>
-            <Text  style={styles.buttonText} > Existing</Text>
-            <Text  style={styles.buttonText} > User</Text>
+            <Text  style={styles.buttonText} >Existing</Text>
+            <Text  style={styles.buttonText} >User</Text>
          </TouchableOpacity>
         <TouchableOpacity
         style={styles.loginBtns} >
-            <Text  style={styles.buttonText} > GOOGLE</Text>
+            <Text  style={styles.buttonText} >GOOGLE</Text>
          </TouchableOpacity>
          <TouchableOpacity
         style={styles.loginBtns} >
-            <Text  style={styles.buttonText} > FB</Text>
+            <Text  style={styles.buttonText} >FB</Text>
          </TouchableOpacity>
          <TouchableOpacity
         style={styles.loginBtns} >
-            <Text  style={styles.buttonText} > X</Text>
+            <Text  style={styles.buttonText} >X</Text>
          </TouchableOpacity>
 
         </View>

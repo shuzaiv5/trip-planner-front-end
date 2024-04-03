@@ -33,7 +33,7 @@ const Signin = ({navigation}: {navigation: any}) => {
   return (
     <View style={[styles.container,{paddingTop:70,}]}>
       
-        <View style={[styles.logoContainer,{marginBottom:40}]}>
+        <View style={[styles.logoContainer,{marginBottom:10}]}>
             <Image style={styles.logo} source={require('../../assets/images/logos/c2cBlack.png')}/>
         </View>  
         <Formik<FormModel>
@@ -89,12 +89,12 @@ const Signin = ({navigation}: {navigation: any}) => {
           onValueChange={setSelection}
           style={styles.checkbox}
         />
-        <Text style={styles.label}>Remember Me</Text>
+        <Text style={[styles.label, {marginLeft:5}]}>Remember Me</Text>
     </View>
     <View >
       <TouchableOpacity
        onPress={()=>navigation.navigate('Welcome')} >
-          <Text  style={[styles.linkText,{marginTop:5,marginLeft:5}]} >Forget Username or Password?</Text>
+          <Text  style={[styles.linkText,{marginTop:10,textAlign: 'center'}]} >Forget Username or Password?</Text>
        </TouchableOpacity>
     </View>
     </View>
@@ -114,15 +114,15 @@ const Signin = ({navigation}: {navigation: any}) => {
         
         <TouchableOpacity
         style={styles.loginBtns} >
-            <Text  style={styles.buttonText} > GOOGLE</Text>
+            <Text  style={styles.buttonText} >GOOGLE</Text>
          </TouchableOpacity>
          <TouchableOpacity
         style={styles.loginBtns} >
-            <Text  style={styles.buttonText} > FB</Text>
+            <Text  style={styles.buttonText} >FB</Text>
          </TouchableOpacity>
          <TouchableOpacity
         style={styles.loginBtns} >
-            <Text  style={styles.buttonText} > X</Text>
+            <Text  style={styles.buttonText} >X</Text>
          </TouchableOpacity>
 
         </View>
