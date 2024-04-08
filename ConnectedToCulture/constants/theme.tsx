@@ -11,7 +11,11 @@ const COLORS = {
     white:'#FFFFFF',
     darkWhite:'#3E3E3A',
     lightGray:'#D8D8D6',
-    gray:'#C7C7C4'
+    gray:'#C7C7C4',
+
+    secondary:'#FEDFA0',
+    primaryBtn:'#022435'
+
 
 
 
