@@ -5,38 +5,50 @@ import COLORS from '../../constants/theme';
 import styles from './authentication.style';
 import { HeightSpacer } from '../../components';
 
-const WelcomeScreen: React.FC = () => {
+const WelcomeScreen:React.FC<{ navigation: any }> = ({ navigation }) =>{
  
-  return (
-    
-    <ImageBackground
-    source={require('../../assets/images/country/ghana/ifeoluwa-a--CgUhaShACE-unsplash.jpg')}
-    style={styles.background}>
-     <View style={[styles.container,styles.overlay]}>
-        
-        <View style={styles.logoContainer}>
-            <Image style={styles.logo} source={require('../../assets/images/logos/c2c.png')}/>
-        </View>  
-        <HeightSpacer height={20}/>
-        <View style={styles.greetingsContainer}>
-            <Text style={styles.greetingText}>Welcome! </Text>
-            <Text style={styles.commonText}>(USA, English)</Text>
+   
+    const [showWelcome, setShowWelcome] = useState(true);
+
+    useEffect(() => {
+      // Diğer sayfaların yüklenmesini beklemek için bir süre bekleyin (örneğin 3 saniye)
+      const timer = setTimeout(() => {
+        setShowWelcome(false);
+        navigation.navigate('BottomNavigation');
+      }, 3000);
+  
+      return () => clearTimeout(timer); // Temizleme işlevi
+    }, []);
+
+    return (
+      <ImageBackground
+        source={require('../../assets/images/country/ghana/ifeoluwa-a--CgUhaShACE-unsplash.jpg')}
+        style={styles.background}>
+        <View style={[styles.container,styles.overlay]}>
+          
+          <View style={styles.logoContainer}>
+              <Image style={styles.logo} source={require('../../assets/images/logos/c2c.png')}/>
+          </View>  
+          <HeightSpacer height={20}/>
+          <View style={styles.greetingsContainer}>
+              <Text style={styles.greetingText}>Welcome! </Text>
+              <Text style={styles.commonText}>(USA, English)</Text>
+          </View>
+          <View style={styles.greetingsContainer}>
+              <Text style={styles.greetingText}>Akwaaba!</Text>
+              <Text style={styles.commonText}> (Ghana, Akan)</Text>
+          </View>
+          <View style={styles.greetingsContainer}>
+              <Text style={styles.greetingText}>Barka da zuwa! (Nigeria, Hausa)</Text>
+              <Text style={styles.commonText}> (Ghana, Akan)</Text>
+          </View>
+          <View style={styles.greetingsContainer}>
+              <Text style={styles.greetingText}>Bienvenue! (Togo, French)</Text>
+              <Text style={styles.commonText}> (Ghana, Akan)</Text>
+          </View>
         </View>
-        <View style={styles.greetingsContainer}>
-            <Text style={styles.greetingText}>Akwaaba!</Text>
-            <Text style={styles.commonText}> (Ghana, Akan)</Text>
-        </View>
-        <View style={styles.greetingsContainer}>
-            <Text style={styles.greetingText}>Barka da zuwa! (Nigeria, Hausa)</Text>
-            <Text style={styles.commonText}> (Ghana, Akan)</Text>
-        </View>
-        <View style={styles.greetingsContainer}>
-            <Text style={styles.greetingText}>Bienvenue! (Togo, French)</Text>
-            <Text style={styles.commonText}> (Ghana, Akan)</Text>
-        </View>
-    </View>
-    </ImageBackground>
-  );
+      </ImageBackground>
+    );
 };
 
 
