@@ -88,6 +88,14 @@ const styles = StyleSheet.create({
         position: 'relative',
         marginBottom: windowHeight * 0.015,
     },
+    btnWrapper: {
+        position: 'relative',
+        marginBottom: windowHeight * 0.015,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        
+    },
     createButton:{
         width:'60%',
         height:'auto',
@@ -100,7 +108,7 @@ const styles = StyleSheet.create({
         marginHorizontal:windowHeight * 0.1,
         marginBottom: windowHeight * 0.01,
         marginTop: windowHeight * 0.01,
-        backgroundColor:COLORS.primaryBtn,
+        backgroundColor:COLORS.primaryDark,
         borderRadius:5,
         justifyContent: 'center',
         alignItems: 'center',

@@ -115,7 +115,8 @@ const CreateAccount = ({navigation}: {navigation: any}) => {
                 value={values.password}
                 onChangeText={handleChange('password')}
                 autoCapitalize='none'
-                autoCorrect={false}/>
+                autoCorrect={false}
+                secureTextEntry/>
             
             {touched.password && errors.password && (
                 <Text style={styles.errorMessage}>{errors.password}</Text>
@@ -129,7 +130,8 @@ const CreateAccount = ({navigation}: {navigation: any}) => {
             onBlur={()=>setFieldTouched('verifyPassword')}
             value={values.verifyPassword}
             onChangeText={handleChange('verifyPassword')}
-            autoCapitalize='none'/>
+            autoCapitalize='none'
+            secureTextEntry/>
        
         {touched.verifyPassword && errors.verifyPassword && (
               <Text style={styles.errorMessage}>{errors.verifyPassword}</Text>

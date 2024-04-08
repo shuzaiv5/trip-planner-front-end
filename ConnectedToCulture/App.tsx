@@ -10,8 +10,8 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 
-import Signin from './screens/authentication/Signin';
-import { CreateAccount, Welcome } from './screens';
+
+import { CreateAccount, Welcome,Signin } from './screens';
 import { StatusBar,StyleSheet} from 'react-native';
 import COLORS from './constants/theme';
 

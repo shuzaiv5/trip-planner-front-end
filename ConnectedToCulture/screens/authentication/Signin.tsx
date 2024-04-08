@@ -6,8 +6,8 @@ import COLORS from '../../constants/theme';
 import CheckBox from '@react-native-community/checkbox';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { LoginButtons } from '../../components';
-import { create } from 'domain';
+import { LoginButtons,ReusableButton,HeightSpacer} from '../../components';
+
 
 interface FormModel{
     userName:string,
@@ -23,14 +23,8 @@ const validationSchema=Yup.object().shape({
         
   })
 
-const { globalStyles, rowWithSpace } = globalStylesAndRowWithSpace;
-
-
-
 const Signin = ({navigation}: {navigation: any}) => {
   const [isSelected, setSelection] = useState(false);
- 
-
  
   return (
     <ImageBackground
@@ -79,6 +73,7 @@ const Signin = ({navigation}: {navigation: any}) => {
     value={values.password}
     onChangeText={handleChange('password')}
     autoCapitalize='none'
+    secureTextEntry
     autoCorrect={false}></TextInput>
    </View>
    {touched.password && errors.password && (
@@ -103,31 +98,49 @@ const Signin = ({navigation}: {navigation: any}) => {
        </TouchableOpacity>
     </View>
     </View>
-
+    <HeightSpacer height={20}/>
          
-    <View style={styles.wrapper}>
-      <TouchableOpacity
-      style={styles.createButton}
-      onPress={()=>navigation.navigate('Welcome')} >
-          <Text  style={[styles.buttonText]} >Sign In</Text>
-       </TouchableOpacity>
+    <View style={styles.btnWrapper}>
+    <ReusableButton onPress={()=>navigation.navigate('Welcome')}
+                 btnText='Sign In' 
+                 width={'50%'}
+                 textColor={COLORS.white}
+                 backgroundColor={COLORS.primaryDark}
+                 borderWidth={1}
+                 borderColor={COLORS.primaryDark}
+                 paddingHorizantal={10}
+                 paddingVertical={8}
+                 />
        </View>
-  <View style={[styles.wrapper,{alignItems:'center',padding:20}]}>
+  <View style={[styles.wrapper,{alignItems:'center'}]}>
             <Text style={[styles.commonTextSignIn]}>Or Sign In Using</Text>
   </View>
         
   <LoginButtons/>
 
-  <View style={[styles.wrapper,{alignItems:'center',padding:20}]}>
+  <View style={[styles.wrapper,{alignItems:'center',paddingTop:20}]}>
       <Text style={[styles.commonTextSignIn]}>Or </Text>
   </View>
-
-
- 
-  
-    </>
+  <View style={styles.btnWrapper}>
+  <ReusableButton onPress={()=>navigation.navigate('CreateAccount')}
+                 btnText='Create New Account' 
+                 width={'45%'}
+                 textColor={COLORS.primaryDark}
+                 backgroundColor={COLORS.utilityYellow}
+                 borderWidth={1}
+                 borderColor={COLORS.utilityYellow}
+                 paddingHorizantal={10}
+                 paddingVertical={5}
+                 />
+  </View>
+  </>
     )}
   </Formik>
+  
+
+    
+  
+ 
   </View>
   </ImageBackground>
   )
