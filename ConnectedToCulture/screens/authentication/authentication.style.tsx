@@ -162,16 +162,17 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
         textDecorationColor: COLORS.dark,
     },
-    newAccountText: {
-        marginTop: '5%',
-        alignItems: 'center',
-    },
-    welcomeContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center', // Center content
-        backgroundColor: COLORS.white,
-    },
+  //welcome page
+  greetingsContainer: {
+    alignItems: 'center',
+    marginBottom: windowHeight * 0.03,
+  },
+  greetingText: {
+    fontSize: 24,
+    textAlign: 'center',
+    marginBottom: 5,
+    color: COLORS.primaryDark
+  },
 });
 
 export default styles;

@@ -101,7 +101,7 @@ const Signin = ({navigation}: {navigation: any}) => {
     <HeightSpacer height={20}/>
          
     <View style={styles.btnWrapper}>
-    <ReusableButton onPress={()=>navigation.navigate('Welcome')}
+    <ReusableButton onPress={()=>navigation.navigate('BottomNavigation')}
                  btnText='Sign In' 
                  width={'50%'}
                  textColor={COLORS.white}

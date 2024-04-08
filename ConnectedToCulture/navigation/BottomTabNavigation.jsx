@@ -1,7 +1,8 @@
-import { View, Text } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Home,Explore,Plan,Profile } from '../screens';
+import { Welcome } from '../screens';
 const Tab=createBottomTabNavigator();
 
 const tabBarStyle={
@@ -17,13 +18,14 @@ const BottomTabNavigation = () => {
   return (
    
         <Tab.Navigator 
-            initialRouteName='Home'
+            initialRouteName='Welcome'
             activeColor='#eb6a58'
             tabBarHideKeyboard={true}
             headerShown={false}
             inactiveColor='#3e2465'
             barStyle={{paddingBottom:48}}
         >
+           
             <Tab.Screen 
                 name="Home"
                 component={Home}
@@ -33,13 +35,8 @@ const BottomTabNavigation = () => {
                         tabBarShowLabel:false,
                         headerShown:false,
                         tabBarIcon:({focused})=> (
-                            <Ionicons
-                                name={focused ? 'grid':'grid-outline'}
-                                color={focused ? COLORS.red:COLORS.gray}
-                                size={26}
-                            
-                            />
-    
+                            <Image source={require('../assets/icons/Home.png')} 
+                            style={{width:26,height:26}}/>   
                         )
                     }
                 }
@@ -55,12 +52,8 @@ const BottomTabNavigation = () => {
                         tabBarShowLabel:false,
                         headerShown:false,
                         tabBarIcon:({focused})=> (
-                            <Ionicons
-                                name={focused ? 'location':'location-outline'}
-                                color={focused ? COLORS.red:COLORS.gray}
-                                size={26}
-                            
-                            />
+                            <Image source={require('../assets/icons/explore.png')} 
+                            style={{width:26,height:26}}/>   
     
                         )
                     }
@@ -76,12 +69,8 @@ const BottomTabNavigation = () => {
                         tabBarShowLabel:false,
                         headerShown:false,
                         tabBarIcon:({focused})=> (
-                            <Ionicons
-                                name={focused ? 'chatbubble-ellipses':'chatbubble-ellipses-outline'}
-                                color={focused ? COLORS.red:COLORS.gray}
-                                size={26}
-                            
-                            />
+                            <Image source={require('../assets/icons/Plan.png')} 
+                            style={{width:26,height:26}}/>   
     
                         )
                     }
@@ -97,12 +86,8 @@ const BottomTabNavigation = () => {
                         tabBarShowLabel:false,
                         headerShown:false,
                         tabBarIcon:({focused})=> (
-                            <Ionicons
-                                name={focused ? 'person':'person-outline'}
-                                color={focused ? COLORS.red:COLORS.gray}
-                                size={26}
-                            
-                            />
+                            <Image source={require('../assets/icons/Profile.png')} 
+                            style={{width:26,height:26}}/>   
     
                         )
                     }
