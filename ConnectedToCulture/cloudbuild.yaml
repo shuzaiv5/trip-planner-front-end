@@ -3,12 +3,6 @@ steps:
 - name: 'gcr.io/cloud-builders/npm'
   args: ['install']
 
-# Set Android Home environment variable
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - 'export ANDROID_HOME="$HOME/Android/Sdk"'
 
 # Build the app
 - name: 'gcr.io/cloud-builders/gcloud'
