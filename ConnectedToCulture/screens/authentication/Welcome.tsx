@@ -11,13 +11,13 @@ const WelcomeScreen:React.FC<{ navigation: any }> = ({ navigation }) =>{
     const [showWelcome, setShowWelcome] = useState(true);
 
     useEffect(() => {
-      // Diğer sayfaların yüklenmesini beklemek için bir süre bekleyin (örneğin 3 saniye)
+      
       const timer = setTimeout(() => {
         setShowWelcome(false);
         navigation.navigate('BottomNavigation');
       }, 3000);
   
-      return () => clearTimeout(timer); // Temizleme işlevi
+      return () => clearTimeout(timer); 
     }, []);
 
     return (
