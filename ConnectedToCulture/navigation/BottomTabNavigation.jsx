@@ -3,6 +3,11 @@ import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Home,Explore,Plan,Profile } from '../screens';
 import { Welcome } from '../screens';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faHome} from '@fortawesome/free-solid-svg-icons/faHome';
+import {faSearch} from '@fortawesome/free-solid-svg-icons';
+import {faMap} from '@fortawesome/free-solid-svg-icons';
+import {faPerson} from '@fortawesome/free-solid-svg-icons';
 const Tab=createBottomTabNavigator();
 
 const tabBarStyle={
@@ -35,8 +40,7 @@ const BottomTabNavigation = () => {
                         tabBarShowLabel:false,
                         headerShown:false,
                         tabBarIcon:({focused})=> (
-                            <Image source={require('../assets/icons/Home.png')} 
-                            style={{width:26,height:26}}/>   
+                            <FontAwesomeIcon size={24} icon={faHome} />  
                         )
                     }
                 }
@@ -52,8 +56,7 @@ const BottomTabNavigation = () => {
                         tabBarShowLabel:false,
                         headerShown:false,
                         tabBarIcon:({focused})=> (
-                            <Image source={require('../assets/icons/explore.png')} 
-                            style={{width:26,height:26}}/>   
+                            <FontAwesomeIcon size={24} icon={faSearch} />   
     
                         )
                     }
@@ -69,8 +72,7 @@ const BottomTabNavigation = () => {
                         tabBarShowLabel:false,
                         headerShown:false,
                         tabBarIcon:({focused})=> (
-                            <Image source={require('../assets/icons/Plan.png')} 
-                            style={{width:26,height:26}}/>   
+                            <FontAwesomeIcon size={24} icon={faMap} />  
     
                         )
                     }
@@ -86,8 +88,7 @@ const BottomTabNavigation = () => {
                         tabBarShowLabel:false,
                         headerShown:false,
                         tabBarIcon:({focused})=> (
-                            <Image source={require('../assets/icons/Profile.png')} 
-                            style={{width:26,height:26}}/>   
+                            <FontAwesomeIcon size={24} icon={faPerson}/> 
     
                         )
                     }

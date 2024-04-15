@@ -1,5 +1,5 @@
 import React, { useState, useEffect }  from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Image, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, Image, ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import COLORS from '../../constants/theme';
 import styles from './authentication.style';
