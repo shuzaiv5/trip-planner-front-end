@@ -1,4 +1,4 @@
-import { StyleSheet, TextStyle, ViewStyle, ImageStyle, Dimensions } from 'react-native';
+import { StyleSheet, TextStyle, ViewStyle, ImageStyle, Dimensions, ImageBackground } from 'react-native';
 import COLORS from '../../constants/theme';
 
 // Get the dimensions of the screen
@@ -27,25 +27,41 @@ interface Style {
 
 
 const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+        resizeMode: "cover",
+        justifyContent: "center",
+        backgroundColor: 'rgba(0, 0, 0,0.3)',
+    },
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(254, 246, 217, 0.5)', // #FEF6D9 with 50% opacity
+
+    },
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: COLORS.white,
-    },
-    background: {
-        flex: 1,
-        width: '100%',
-        height: '100%',
-        alignItems: 'center',
+        paddingTop: windowHeight * 0.01,
         justifyContent: 'center',
     },
+ 
     commonText: {
         fontFamily: 'Almarai',
         fontSize: 14,
-        fontWeight: '400',
+        fontWeight: '600',
         lineHeight: 16,
-        color: COLORS.dark,
+        color: '#022435',
+        textAlign:'center',
+       
       },
+    commonTextSignIn: {
+        fontFamily: 'Almarai',
+        fontSize: 14,
+        fontWeight: '700',
+        lineHeight: 16,
+        color:COLORS.dark,
+        textAlign:'center',
+    },
     createAccountText: {
         fontFamily: 'Almarai', // Make sure this font is properly linked in your React Native project
         fontWeight: '400',
@@ -54,6 +70,7 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         fontSize: 32,
         textAlign: 'center',
+        justifyContent: 'center',
     },
     inputWrapper: {
         borderColor: '#D4D4D4',
@@ -71,17 +88,38 @@ const styles = StyleSheet.create({
         position: 'relative',
         marginBottom: windowHeight * 0.015,
     },
-    buttonWrapper: {
+    btnWrapper: {
+        position: 'relative',
+        marginBottom: windowHeight * 0.015,
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: windowHeight * 0.1,
+        
     },
+    createButton:{
+        width:'60%',
+        height:'auto',
+        top:10,
+        gap:10,
+        paddingTop: 15,
+        paddingBottom:15,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginHorizontal:windowHeight * 0.1,
+        marginBottom: windowHeight * 0.01,
+        marginTop: windowHeight * 0.01,
+        backgroundColor:COLORS.primaryDark,
+        borderRadius:5,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+   
     buttonText: {
         fontFamily: 'Almarai', // Make sure this font is properly linked in your React Native project
         fontSize: 14,
         fontWeight: '400',
-        lineHeight: 16,
-        color: COLORS.white,
+        lineHeight: 16,        
+        color: "#FFFFFF",
         textAlign: 'center',
     },
     errorMessage: {
@@ -89,30 +127,24 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         lineHeight: 12,
         color: 'red',
-        fontSize: 12,
+        fontSize: 14,
         marginLeft: 5,
         textAlign: 'right',
+        paddingTop: 10,
     },
     logoContainer: {
-        width: '55%',
-        height: windowHeight * 0.2, // Adjusted to use relative height
-        marginHorizontal: '28%',
+        width: '100%',
+        height: windowHeight * 0.3, // Adjusted to use relative height
+        paddingTop: windowHeight * 0.02,
         marginBottom: windowHeight * 0.001,
     },
     logo: {
-        width: '80%', // Adjust to fill the container width
-        height: '80%', // Adjust to fill the container height
+        width: '100%', // Adjust to fill the container width
+        height: '100%', // Adjust to fill the container height
         resizeMode: 'contain',
+        
     },
-    loginBtns: {
-        width: '22%',
-        height: 120,
-        paddingTop: 50,
-        marginLeft: 20,
-        backgroundColor: COLORS.black,
-        alignItems: 'center',
-        borderRadius: 5,
-    },
+      
     checkboxContainer: {
         flexDirection: 'row',
         alignSelf: 'center', // Adjusted for alignment
@@ -120,14 +152,7 @@ const styles = StyleSheet.create({
     checkbox: {
         alignSelf: 'center',
     },
-    label: {
-        fontFamily: 'Almarai', // Make sure this font is properly linked in your React Native project
-        fontSize: 14,
-        fontWeight: '400',
-        lineHeight: 16,
-        color: COLORS.dark,
-        marginTop: 8,
-    },
+ 
     linkText: {
         fontFamily: 'Almarai', // Make sure this font is properly linked in your React Native project
         fontSize: 14,
@@ -137,16 +162,17 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
         textDecorationColor: COLORS.dark,
     },
-    newAccountText: {
-        marginTop: '5%',
-        alignItems: 'center',
-    },
-    welcomeContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center', // Center content
-        backgroundColor: COLORS.white,
-    },
+  //welcome page
+  greetingsContainer: {
+    alignItems: 'center',
+    marginBottom: windowHeight * 0.03,
+  },
+  greetingText: {
+    fontSize: 24,
+    textAlign: 'center',
+    marginBottom: 5,
+    color: COLORS.primaryDark
+  },
 });
 
 export default styles;

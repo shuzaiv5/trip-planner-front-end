@@ -1,10 +1,14 @@
-import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
-import React, {useState} from 'react';
-import styles from './authentication.style';
+
+import { View, Text, TextInput, TouchableOpacity,Image,ImageBackground, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import styles from './authentication.style'
+
 import globalStylesAndRowWithSpace from '../../constants/global.style';
 import CheckBox from '@react-native-community/checkbox';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
+import { LoginButtons,ReusableButton,HeightSpacer} from '../../components';
+
 
 interface FormModel {
   userName: string;
@@ -17,129 +21,131 @@ const validationSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, 'Password must be 8 chracters')
     .required('Required'),
-});
 
-const {globalStyles, rowWithSpace} = globalStylesAndRowWithSpace;
+        
+  })
 
 const Signin = ({navigation}: {navigation: any}) => {
   const [isSelected, setSelection] = useState(false);
-
+ 
   return (
-    <View style={[styles.container, {paddingTop: 70}]}>
-      <View style={[styles.logoContainer, {marginBottom: 10}]}>
-        <Image
-          style={styles.logo}
-          source={require('../../assets/images/logos/c2cBlack.png')}
-        />
-      </View>
-      <Formik<FormModel>
+    <ImageBackground
+    source={require('../../assets/images/country/ghana/owen-oj-n8is7rTXrbE-unsplash.jpg')}
+    style={styles.background}>
+     <View style={[styles.container,styles.overlay]}>
+        
+        <View style={styles.logoContainer}>
+            <Image style={styles.logo} source={require('../../assets/images/logos/c2c.png')}/>
+        </View>  
+        <Formik<FormModel>
+
         initialValues={{
           userName: '',
           password: '',
         }}
         validationSchema={validationSchema}
-        onSubmit={() => navigation.navigate('Welcome')}>
-        {({handleChange, touched, values, errors, setFieldTouched}) => (
-          <>
-            <View style={styles.wrapper}>
-              <View>
-                <TextInput
-                  style={styles.inputWrapper}
-                  placeholder="Username"
-                  placeholderTextColor={'#B7B7B7'}
-                  onFocus={() => setFieldTouched('userName')}
-                  onBlur={() => setFieldTouched('userName')}
-                  value={values.userName}
-                  onChangeText={handleChange('userName')}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-              </View>
-              {touched.userName && errors.userName && (
-                <Text style={styles.errorMessage}>{errors.userName}</Text>
-              )}
-            </View>
 
-            <View style={[styles.wrapper, {marginBottom: 3}]}>
-              <View>
-                <TextInput
-                  style={styles.inputWrapper}
-                  placeholder="Password"
-                  placeholderTextColor={'#B7B7B7'}
-                  onFocus={() => setFieldTouched('password')}
-                  onBlur={() => setFieldTouched('password')}
-                  value={values.password}
-                  onChangeText={handleChange('password')}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-              </View>
-              {touched.password && errors.password && (
-                <Text style={styles.errorMessage}>{errors.password}</Text>
-              )}
-            </View>
-
-            <View style={styles.wrapper}>
-              <View style={styles.checkboxContainer}>
-                <CheckBox
-                  value={isSelected}
-                  onValueChange={setSelection}
-                  style={styles.checkbox}
-                />
-                <Text style={[styles.label, {marginLeft: 5}]}>Remember Me</Text>
-              </View>
-              <View>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Welcome')}>
-                  <Text
-                    style={[
-                      styles.linkText,
-                      {marginTop: 10, textAlign: 'center'},
-                    ]}>
-                    Forget Username or Password?
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <View style={styles.buttonWrapper}>
-              <TouchableOpacity
-                style={[globalStyles.fullWidthBtnBlack, {width: '50%'}]}
-                onPress={() => navigation.navigate('Welcome')}>
-                <Text style={[styles.buttonText]}>Sign In</Text>
-              </TouchableOpacity>
-
-              <View
-                style={[styles.wrapper, {alignItems: 'center', padding: 20}]}>
-                <Text style={styles.commonText}>Or Sign In As</Text>
-              </View>
-              <View style={[rowWithSpace('center')]}>
-                <TouchableOpacity style={styles.loginBtns}>
-                  <Text style={styles.buttonText}>GOOGLE</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.loginBtns}>
-                  <Text style={styles.buttonText}>FB</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.loginBtns}>
-                  <Text style={styles.buttonText}>X</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={styles.newAccountText}>
-              <TouchableOpacity
-                style={{flexDirection: 'row', alignItems: 'center'}}
-                onPress={() => navigation.navigate('CreateAccount')}>
-                <Text style={styles.commonText}>Don't have an account?</Text>
-                <Text style={[styles.linkText, {marginTop: 0, marginLeft: 5}]}>
-                  Create New Account
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        )}
-      </Formik>
+        onSubmit={()=>navigation.navigate('Welcome') }>
+        {({  handleChange,
+              touched,
+              handleSubmit,
+              values,
+              errors,
+              setFieldTouched})=>(    
+        <>
+    <View style={styles.wrapper}>
+    
+    <View>
+    <TextInput style={styles.inputWrapper} placeholder='Username' placeholderTextColor={'#79796E'}
+     onFocus={()=>setFieldTouched('userName')}
+     onBlur={()=>setFieldTouched('userName')}
+     value={values.userName}
+     onChangeText={handleChange('userName')}
+     autoCapitalize='none'
+     autoCorrect={false}></TextInput>
     </View>
-  );
-};
+    {touched.userName && errors.userName && (
+              <Text style={styles.errorMessage}>{errors.userName}</Text>
+            )}
+    </View>
+       
+    <View style={[styles.wrapper,{marginBottom:3}]}>
+   <View>
+   <TextInput style={styles.inputWrapper} placeholder='Password' placeholderTextColor={'#79796E'}
+    onFocus={()=>setFieldTouched('password')}
+    onBlur={()=>setFieldTouched('password')}
+    value={values.password}
+    onChangeText={handleChange('password')}
+    autoCapitalize='none'
+    secureTextEntry
+    autoCorrect={false}></TextInput>
+   </View>
+   {touched.password && errors.password && (
+              <Text style={styles.errorMessage}>{errors.password}</Text>
+            )}
+    </View>
+    <View style={styles.wrapper}>
+    <View style={styles.checkboxContainer}>
+        <CheckBox
+          value={isSelected}
+          onValueChange={setSelection}
+          style={styles.checkbox}
+        />
+        <Text style={[styles.commonTextSignIn,{marginVertical:10}]}>Remember Me</Text>
+    </View>
+    <View >
+      <TouchableOpacity
+       onPress={()=>navigation.navigate('Welcome')} >
+          <Text  style={[styles.linkText,styles.commonTextSignIn]} >Forget Username or Password?</Text>
+       </TouchableOpacity>
+    </View>
+    </View>
+    <HeightSpacer height={20}/>
+         
+    <View style={styles.btnWrapper}>
+    <ReusableButton onPress={()=>navigation.navigate('Welcome')}
+                 btnText='Sign In' 
+                 width={'50%'}
+                 textColor={COLORS.white}
+                 backgroundColor={COLORS.primaryDark}
+                 borderWidth={1}
+                 borderColor={COLORS.primaryDark}
+                 paddingHorizantal={10}
+                 paddingVertical={8}
+                 />
+       </View>
+  <View style={[styles.wrapper,{alignItems:'center'}]}>
+            <Text style={[styles.commonTextSignIn]}>Or Sign In Using</Text>
+  </View>
+        
+  <LoginButtons/>
 
-export default Signin;
+  <View style={[styles.wrapper,{alignItems:'center',paddingTop:20}]}>
+      <Text style={[styles.commonTextSignIn]}>Or </Text>
+  </View>
+  <View style={styles.btnWrapper}>
+  <ReusableButton onPress={()=>navigation.navigate('CreateAccount')}
+                 btnText='Create New Account' 
+                 width={'45%'}
+                 textColor={COLORS.primaryDark}
+                 backgroundColor={COLORS.utilityYellow}
+                 borderWidth={1}
+                 borderColor={COLORS.utilityYellow}
+                 paddingHorizantal={10}
+                 paddingVertical={5}
+                 />
+  </View>
+  </>
+    )}
+  </Formik>
+  
+
+    
+  
+ 
+  </View>
+  </ImageBackground>
+  )
+}
+
+export default Signin
