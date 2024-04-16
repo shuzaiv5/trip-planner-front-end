@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect }  from 'react';
 import { View, Text, Image, ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -50,6 +51,7 @@ const WelcomeScreen:React.FC<{ navigation: any }> = ({ navigation }) =>{
       </ImageBackground>
     );
 };
+
 
 
 

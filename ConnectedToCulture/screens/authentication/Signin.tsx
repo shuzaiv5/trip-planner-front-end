@@ -1,25 +1,28 @@
+
 import { View, Text, TextInput, TouchableOpacity,Image,ImageBackground, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import styles from './authentication.style'
+
 import globalStylesAndRowWithSpace from '../../constants/global.style';
-import COLORS from '../../constants/theme';
 import CheckBox from '@react-native-community/checkbox';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import * as Yup from 'yup';
 import { LoginButtons,ReusableButton,HeightSpacer} from '../../components';
+import COLORS from '../../constants/theme';
 
 
-interface FormModel{
-    userName:string,
-    password:string,
+interface FormModel {
+  userName: string;
+  password: string;
 }
-const validationSchema=Yup.object().shape({
-    userName:Yup.string()
-    .min(3,"Username must be 3 chracters")
+const validationSchema = Yup.object().shape({
+  userName: Yup.string()
+    .min(3, 'Username must be 3 chracters')
     .required('Required'),
-     password:Yup.string()
-    .min(8,"Password must be 8 chracters")
+  password: Yup.string()
+    .min(8, 'Password must be 8 chracters')
     .required('Required'),
+
         
   })
 
@@ -36,11 +39,13 @@ const Signin = ({navigation}: {navigation: any}) => {
             <Image style={styles.logo} source={require('../../assets/images/logos/c2c.png')}/>
         </View>  
         <Formik<FormModel>
+
         initialValues={{
-            userName:'',
-            password:'',
+          userName: '',
+          password: '',
         }}
         validationSchema={validationSchema}
+
         onSubmit={()=>navigation.navigate('Welcome') }>
         {({  handleChange,
               touched,
@@ -79,8 +84,6 @@ const Signin = ({navigation}: {navigation: any}) => {
               <Text style={styles.errorMessage}>{errors.password}</Text>
             )}
     </View>
-   
-    
     <View style={styles.wrapper}>
     <View style={styles.checkboxContainer}>
         <CheckBox
