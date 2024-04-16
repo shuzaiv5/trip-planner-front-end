@@ -173,6 +173,34 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: COLORS.primaryDark
   },
+
+  //Terms and Conditions - Reset Password
+  box:{
+    backgroundColor:COLORS.white,
+    width:40,
+    height:40,
+    borderRadius:12,
+    alignItems:'center',
+    justifyContent:'center'
+},
+textBox:{
+    marginHorizontal:20,
+    marginVertical:10
+  },
+  inputWrapperRstPassword: {
+    borderColor: '#D4D4D4',
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    height: 50,
+    borderRadius: 5,
+    flexDirection: 'row',
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    justifyContent: 'center',
+    // Text styles moved to TextInput component
+},
+textEmail: {
+    marginBottom:0}
 });
 
 export default styles;

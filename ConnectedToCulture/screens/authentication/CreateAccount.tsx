@@ -150,8 +150,9 @@ const CreateAccount = ({navigation}: {navigation: any}) => {
   </Formik>
   <View style={styles.wrapper}>
       <Text style={styles.commonText}>By Creating An Account You Agree To Our</Text>
+      <TouchableOpacity onPress={()=>navigation.navigate('TermsAndConditions')}>
       <Text style={[styles.linkText,styles.commonText]}>Terms And Conditions</Text>
-      
+      </TouchableOpacity>
     </View>
     <View >
     <Text style={styles.commonText}>Or Sign In As</Text>

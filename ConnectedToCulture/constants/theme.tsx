@@ -14,6 +14,7 @@ const COLORS = {
     gray:'#C7C7C4',
 
     secondary:'#FEDFA0',
+    primary:'#0E7070',
     primaryDark:'#022435',
     utilityYellow:'#FEEFC6',
 

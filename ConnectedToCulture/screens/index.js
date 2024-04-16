@@ -6,6 +6,8 @@ import Home from './home/Home';
 import Explore from "./explore/Explore";
 import Profile from "./profile/Profile";
 import Plan from "./plan/Plan";
+import TermsAndConditions from "./authentication/TermsAndConditions";
+import ResetPassword from "./authentication/ResetPassword";
 export{
     
     Signin,
@@ -14,5 +16,7 @@ export{
     Home,
     Explore,
     Profile,
-    Plan
+    Plan,
+    TermsAndConditions,
+    ResetPassword
 }

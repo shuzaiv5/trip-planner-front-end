@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect }  from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Image, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, Image, ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import COLORS from '../../constants/theme';
 import styles from './authentication.style';
@@ -12,13 +12,13 @@ const WelcomeScreen:React.FC<{ navigation: any }> = ({ navigation }) =>{
     const [showWelcome, setShowWelcome] = useState(true);
 
     useEffect(() => {
-      // Diğer sayfaların yüklenmesini beklemek için bir süre bekleyin (örneğin 3 saniye)
+      
       const timer = setTimeout(() => {
         setShowWelcome(false);
         navigation.navigate('BottomNavigation');
       }, 3000);
   
-      return () => clearTimeout(timer); // Temizleme işlevi
+      return () => clearTimeout(timer); 
     }, []);
 
     return (

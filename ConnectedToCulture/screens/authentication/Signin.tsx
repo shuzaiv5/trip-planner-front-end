@@ -8,6 +8,7 @@ import CheckBox from '@react-native-community/checkbox';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import { LoginButtons,ReusableButton,HeightSpacer} from '../../components';
+import COLORS from '../../constants/theme';
 
 
 interface FormModel {
@@ -55,7 +56,6 @@ const Signin = ({navigation}: {navigation: any}) => {
         <>
     <View style={styles.wrapper}>
     
-    <View>
     <TextInput style={styles.inputWrapper} placeholder='Username' placeholderTextColor={'#79796E'}
      onFocus={()=>setFieldTouched('userName')}
      onBlur={()=>setFieldTouched('userName')}
@@ -67,7 +67,7 @@ const Signin = ({navigation}: {navigation: any}) => {
     {touched.userName && errors.userName && (
               <Text style={styles.errorMessage}>{errors.userName}</Text>
             )}
-    </View>
+   
        
     <View style={[styles.wrapper,{marginBottom:3}]}>
    <View>
@@ -95,7 +95,7 @@ const Signin = ({navigation}: {navigation: any}) => {
     </View>
     <View >
       <TouchableOpacity
-       onPress={()=>navigation.navigate('Welcome')} >
+       onPress={()=>navigation.navigate('ResetPassword')} >
           <Text  style={[styles.linkText,styles.commonTextSignIn]} >Forget Username or Password?</Text>
        </TouchableOpacity>
     </View>
