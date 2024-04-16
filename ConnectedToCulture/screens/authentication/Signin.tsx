@@ -51,7 +51,6 @@ const Signin = ({navigation}: {navigation: any}) => {
         <>
     <View style={styles.wrapper}>
     
-    <View>
     <TextInput style={styles.inputWrapper} placeholder='Username' placeholderTextColor={'#79796E'}
      onFocus={()=>setFieldTouched('userName')}
      onBlur={()=>setFieldTouched('userName')}
@@ -63,7 +62,7 @@ const Signin = ({navigation}: {navigation: any}) => {
     {touched.userName && errors.userName && (
               <Text style={styles.errorMessage}>{errors.userName}</Text>
             )}
-    </View>
+   
        
     <View style={[styles.wrapper,{marginBottom:3}]}>
    <View>
@@ -93,7 +92,7 @@ const Signin = ({navigation}: {navigation: any}) => {
     </View>
     <View >
       <TouchableOpacity
-       onPress={()=>navigation.navigate('Welcome')} >
+       onPress={()=>navigation.navigate('ResetPassword')} >
           <Text  style={[styles.linkText,styles.commonTextSignIn]} >Forget Username or Password?</Text>
        </TouchableOpacity>
     </View>
