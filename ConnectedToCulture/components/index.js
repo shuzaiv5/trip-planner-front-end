@@ -3,11 +3,17 @@ import ReusableButton from '../components/reusable/reusableButton/ReusableButton
 import HeightSpacer from '../components/reusable/HeightSpacer'
 import ResuableText from '../components/reusable/ReusableText'
 import WidthSpacer from './reusable/WidthSpacer'
+import NoTripPlan from './home/NoTripPlan'
+import RecentTripPlan from './home/RecentTripPlan'
+import CountriesToExplore from './home/CountriesToExplore'
 
 export{
     LoginButtons,
     ReusableButton,
     HeightSpacer,
     ResuableText,
-    WidthSpacer
+    WidthSpacer,
+    NoTripPlan,
+    RecentTripPlan,
+    CountriesToExplore
 }

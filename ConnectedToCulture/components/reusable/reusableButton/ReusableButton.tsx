@@ -15,13 +15,14 @@ interface Props {
     borderColor:string |  keyof typeof COLORS| undefined;
     paddingHorizantal:number;
     paddingVertical:number;
+    size:number;
 }
 
-const ResuableButton: React.FC<Props> = ({ onPress, btnText, textColor, width, backgroundColor, borderWidth=1, borderColor,paddingHorizantal,paddingVertical }) => {
+const ResuableButton: React.FC<Props> = ({ onPress, btnText, textColor, width, backgroundColor, borderWidth=1, borderColor,paddingHorizantal,paddingVertical,size}) => {
     const defaultBorderColor = typeof borderColor === 'undefined' ? backgroundColor : borderColor
     const btnTextStyle: TextStyle = {
         fontFamily: 'Almarai',
-        fontSize: 14,
+        fontSize: size,
         color: typeof textColor === 'string' ? textColor : COLORS[textColor],
     };
 

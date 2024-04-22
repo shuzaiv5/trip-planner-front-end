@@ -6,6 +6,7 @@ interface ReusableTextProps {
   family?: string;
   size?: number;
   color?: string;
+  lineHeight?: 14|number;
   align?: 'auto' | 'left' | 'right' | 'center' | 'justify';
 }
 
@@ -14,6 +15,7 @@ const ReusableText: React.FC<ReusableTextProps> = ({
   family,
   size,
   color,
+  lineHeight,
   align,
 }) => {
   const styles = StyleSheet.create({
@@ -22,6 +24,7 @@ const ReusableText: React.FC<ReusableTextProps> = ({
       fontSize: size,
       color: color,
       textAlign: align,
+      lineHeight: lineHeight,
     },
   });
 

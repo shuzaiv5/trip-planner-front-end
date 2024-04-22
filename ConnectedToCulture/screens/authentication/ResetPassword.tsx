@@ -30,7 +30,7 @@ const ResetPassword = ({navigation}: {navigation: any}) => {
         <View style={rowWithSpace("flex-start")}>
        
          <TouchableOpacity style={styles.box}
-          onPress={()=>navigation.navigate('SignIn')}
+          onPress={()=>navigation.navigate('Signin')}
          >
           <FontAwesomeIcon size={24} icon={faArrowLeft} />  
           

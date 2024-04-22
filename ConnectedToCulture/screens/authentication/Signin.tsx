@@ -107,6 +107,7 @@ const Signin = ({navigation}: {navigation: any}) => {
                  btnText='Sign In' 
                  width={'50%'}
                  textColor={COLORS.white}
+                 size={14}
                  backgroundColor={COLORS.primaryDark}
                  borderWidth={1}
                  borderColor={COLORS.primaryDark}
@@ -128,6 +129,7 @@ const Signin = ({navigation}: {navigation: any}) => {
                  btnText='Create New Account' 
                  width={'45%'}
                  textColor={COLORS.primaryDark}
+                 size={14}
                  backgroundColor={COLORS.utilityYellow}
                  borderWidth={1}
                  borderColor={COLORS.utilityYellow}
