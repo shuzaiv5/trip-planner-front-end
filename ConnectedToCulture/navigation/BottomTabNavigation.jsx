@@ -5,9 +5,10 @@ import { Home,Explore,Plan,Profile } from '../screens';
 import { Welcome } from '../screens';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faHome} from '@fortawesome/free-solid-svg-icons/faHome';
-import {faSearch} from '@fortawesome/free-solid-svg-icons';
 import {faMap} from '@fortawesome/free-solid-svg-icons';
-import {faPerson} from '@fortawesome/free-solid-svg-icons';
+import {faGlobe} from '@fortawesome/free-solid-svg-icons';
+import {faUser} from '@fortawesome/free-solid-svg-icons';
+import COLORS from '../constants/theme';
 const Tab=createBottomTabNavigator();
 
 const tabBarStyle={
@@ -40,7 +41,14 @@ const BottomTabNavigation = () => {
                         tabBarShowLabel:false,
                         headerShown:false,
                         tabBarIcon:({focused})=> (
-                            <FontAwesomeIcon size={24} icon={faHome} />  
+                            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <FontAwesomeIcon 
+                                size={24} 
+                                icon={faHome} 
+                                color={focused ? COLORS.primary : COLORS.black} 
+                            />
+                            <Text style={{ color: focused ? COLORS.primary : COLORS.black }}>Home</Text>
+                        </View>
                         )
                     }
                 }
@@ -56,8 +64,11 @@ const BottomTabNavigation = () => {
                         tabBarShowLabel:false,
                         headerShown:false,
                         tabBarIcon:({focused})=> (
-                            <FontAwesomeIcon size={24} icon={faSearch} />   
-    
+                            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <FontAwesomeIcon size={24} icon={faMap} 
+                            color={focused ? COLORS.primary:COLORS.black}/> 
+                            <Text style={{ color: focused ? COLORS.primary : COLORS.black }}>Explore</Text>  
+                            </View>
                         )
                     }
                 }
@@ -72,8 +83,11 @@ const BottomTabNavigation = () => {
                         tabBarShowLabel:false,
                         headerShown:false,
                         tabBarIcon:({focused})=> (
-                            <FontAwesomeIcon size={24} icon={faMap} />  
-    
+                            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <FontAwesomeIcon size={24} icon={faGlobe}
+                            color={focused ? COLORS.primary:COLORS.black} />  
+                            <Text style={{ color: focused ? COLORS.primary : COLORS.black }}>Plan</Text>
+                            </View>
                         )
                     }
                 }
@@ -88,8 +102,11 @@ const BottomTabNavigation = () => {
                         tabBarShowLabel:false,
                         headerShown:false,
                         tabBarIcon:({focused})=> (
-                            <FontAwesomeIcon size={24} icon={faPerson}/> 
-    
+                            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <FontAwesomeIcon size={24} icon={faUser}
+                            color={focused ? COLORS.primary:COLORS.black}/> 
+                            <Text style={{ color: focused ? COLORS.primary : COLORS.black }}>Profile</Text>
+                            </View>
                         )
                     }
                 }
