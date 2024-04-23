@@ -6,10 +6,16 @@ import { Dimensions } from 'react-native'
 import HeightSpacer from '../reusable/HeightSpacer'
 import { ReusableButton } from '..'
 import styles from './home.style'
+import { NavigationProp } from '@react-navigation/native'
 const { height, width } = Dimensions.get('window');
+interface Props {
+   
+  navigation: NavigationProp<any>; // Use NavigationProp
+  
+}
 
 
-const NoTripPlan = ({navigation}: {navigation: any}) => {
+const NoTripPlan :React.FC<Props> = ({navigation})  => {
   return (
     <View style={styles.NoTripCompanentContainer}>
       <View style={styles.imageContainer}>

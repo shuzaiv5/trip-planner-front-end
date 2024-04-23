@@ -5,6 +5,7 @@ import { StyleProp, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 
 
 
+
 // Get the dimensions of the screen
 const { height, width } = Dimensions.get('window');
 
@@ -147,6 +148,72 @@ const styles = StyleSheet.create({
       paginationDotActive: {
         backgroundColor: COLORS.primary, // Change color for active dot
       },
+
+      //Recomendations
+      recomendationCard:{
+        width:'100%',
+        height:height*0.32,
+        backgroundColor: COLORS.white,
+        borderRadius: 15,
+        shadowColor: COLORS.black,
+        shadowOffset: {
+            width: -2,
+            height: -2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 10,
+        paddingTop:0,
+        paddingVertical:0,
+        paddingBottom:width*0.2,
+        marginBottom: width*0.05,
+        gap:20,
+      
+        
+        
+    },
+    recomendationCardImage:{
+        width:'100%',
+        height: height*0.15,
+        borderRadius: 15,
+        padding:0,
+        top:0,
+        marginBottom:0
+    },
+    recommendatinsImage:{
+        width:'100%',
+        height:'100%',
+        resizeMode:'cover',
+        borderTopLeftRadius:15,
+        borderTopRightRadius:15
+    },
+    recomendationCardInfoContainer:{
+        flexDirection: 'column',
+        justifyContent:'space-between',
+        alignItems: 'baseline',
+        margin:10,
+        marginTop:-10
+         
+    },
+    rating:{
+        backgroundColor:COLORS.primaryLight,
+        padding:width*0.005,
+        paddingHorizontal:width*0.02,
+        marginRight:width*0.01,
+    }, 
+    recomendationCardText:{
+        fontFamily:'Almarai',
+        fontSize:12,
+        lineHeight:14.4,
+        color:COLORS.black,
+        fontWeight:'400',
+        paddingBottom:width*0.01
+        
+    },
+    
+
+   
+
 })
 
 export default styles;

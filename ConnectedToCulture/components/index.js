@@ -6,6 +6,7 @@ import WidthSpacer from './reusable/WidthSpacer'
 import NoTripPlan from './home/NoTripPlan'
 import RecentTripPlan from './home/RecentTripPlan'
 import CountriesToExplore from './home/CountriesToExplore'
+import Recommendations from './home/Recommendations'
 
 export{
     LoginButtons,
@@ -15,5 +16,6 @@ export{
     WidthSpacer,
     NoTripPlan,
     RecentTripPlan,
-    CountriesToExplore
+    CountriesToExplore,
+    Recommendations
 }

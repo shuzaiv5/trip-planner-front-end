@@ -1,7 +1,7 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Home,Explore,Plan,Profile } from '../screens';
+import {Home,Profile,Plan,Explore} from '../screens';
 import { Welcome } from '../screens';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faHome} from '@fortawesome/free-solid-svg-icons/faHome';
@@ -12,13 +12,13 @@ import COLORS from '../constants/theme';
 const Tab=createBottomTabNavigator();
 
 const tabBarStyle={
-    padding:20,
-    borderRadius:20,
-    height:80,
+    padding:10,
+    borderRadius:0,
+    height:60,
     position:"absolute",
-    bottom:20,
-    left:20,
-    right:20
+    bottom:0,
+    left:0,
+    right:0
 }
 const BottomTabNavigation = () => {
   return (
