@@ -1,4 +1,4 @@
-import { StyleSheet} from "react-native";
+import { ScrollView, StyleSheet} from "react-native";
 import COLORS from "../../constants/theme";
 import { Dimensions } from "react-native";
 
@@ -6,8 +6,9 @@ import { Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
 
 const homeStyles=StyleSheet.create({
+  
     container: {
-        flex: 1,
+       
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor:COLORS.white,

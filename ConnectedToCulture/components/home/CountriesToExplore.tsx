@@ -14,9 +14,9 @@ interface SlideItem {
   }
 
 interface Props {
-    data: SlideItem[];
+   
     navigation: NavigationProp<any>; // Use NavigationProp
-    route: RouteProp<any, 'CountriesToExplore'>; // Use RouteProp
+    
   }
     
   
@@ -68,7 +68,7 @@ interface Props {
   </View>
 );
 
-const CountriesToExplore :React.FC<Props> = ({ data,navigation})  => {
+const CountriesToExplore :React.FC<Props> = ({navigation})  => {
   
 const [activeIndex, setActiveIndex] = useState(0);
   return (
