@@ -1,0 +1,17 @@
+steps:
+# Install Node.js
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['install']
+
+
+# Build the app
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - 'cd $HOME/Desktop/connected\ to\ culture/trip-planner-front-end/ConnectedToCulture/android && ./gradlew assembleRelease'
+    
+
+# Upload the APK to a Google Cloud Storage bucket
+- name: 'gcr.io/cloud-builders/gsutil'
+  args: ['cp', '../../../app/build/outputs/apk/release/app-release.apk', 'gs://frontend-pipeline-test/C2C.apk']
