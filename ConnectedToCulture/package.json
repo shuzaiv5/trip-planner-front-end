@@ -18,6 +18,7 @@
         "@react-native-community/checkbox": "^0.5.17",
         "@react-native-community/cli": "^13.6.3",
         "@react-native-community/cli-doctor": "^13.6.3",
+        "@react-navigation/bottom-tabs": "^6.5.20",
         "@react-navigation/native": "^6.1.17",
         "@react-navigation/native-stack": "^6.9.22",
         "@types/node": "^20.11.30",

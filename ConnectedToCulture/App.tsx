@@ -10,19 +10,29 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 
-import Signin from './screens/authentication/Signin';
-import { CreateAccount, Login, Welcome } from './screens';
-import { StatusBar } from 'react-native';
+
+import { CreateAccount, Welcome,Signin,TermsAndConditions,ResetPassword} from './screens';
+import { StatusBar,StyleSheet} from 'react-native';
+import BottomTabNavigation from './navigation/BottomTabNavigation';
+import COLORS from './constants/theme';
 
 function App(): React.JSX.Element {
+ // Set the status bar background color
+StatusBar.setBackgroundColor('white');
+
+// Set the status bar style
+StatusBar.setBarStyle('dark-content');
 
   const Stack=createNativeStackNavigator();
   return (
     
   <NavigationContainer>
     <Stack.Navigator>
-      <Stack.Screen name='CreateAccount' component={CreateAccount} options={{headerShown:false}} />
       <Stack.Screen name='Signin' component={Signin} options={{headerShown:false}} />
+      <Stack.Screen name='CreateAccount' component={CreateAccount} options={{headerShown:false}} />
+      <Stack.Screen name='TermsAndConditions' component={TermsAndConditions} options={{headerShown:false}} />
+      <Stack.Screen name='ResetPassword' component={ResetPassword} options={{headerShown:false}} />
+      <Stack.Screen name='BottomNavigation' component={BottomTabNavigation} options={{headerShown:false}} />
       <Stack.Screen name='Welcome' component={Welcome} options={{headerShown:false}} />
     </Stack.Navigator>
   </NavigationContainer>
@@ -31,3 +41,11 @@ function App(): React.JSX.Element {
 
 
 export default App;
+
+const styles = StyleSheet.create({
+  lightContent: {
+    backgroundColor: COLORS.white,
+    color: COLORS.dark,
+  },
+
+});
