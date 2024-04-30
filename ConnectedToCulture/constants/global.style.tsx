@@ -11,11 +11,6 @@ const commonText = {
 };
 
 const globalStyles=StyleSheet.create({
-    container:{
-        flex:1,
-        backgroundColor:COLORS.white
-       
-    },
        
     heading1: {
         fontSize: 32,
