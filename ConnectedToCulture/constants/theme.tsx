@@ -5,13 +5,22 @@ const COLORS = {
     dark: '#000000',
     darkBlack:'#181817',
     black: '#21211D',
+    black400:'#79796E',
     lightBlack:"#3E3E3A",
     darkGray:'#676763',
     lightWhite:'#181817',
     white:'#FFFFFF',
     darkWhite:'#3E3E3A',
     lightGray:'#D8D8D6',
-    gray:'#C7C7C4'
+    gray:'#C7C7C4',
+    
+
+    secondary:'#FEDFA0',
+    primary:'#0E7070',
+    primaryDark:'#022435',
+    primaryLight:'#64D4C0',
+    utilityYellow:'#FEEFC6',
+
 
 
 
