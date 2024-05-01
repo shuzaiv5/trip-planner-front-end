@@ -4,7 +4,7 @@ import styles from './home.style'
 
 import { Dimensions } from "react-native";
 import HeightSpacer from '../reusable/HeightSpacer';
-import { ReusableButton } from '..';
+import { Recommendations, ReusableButton } from '..';
 import COLORS from '../../constants/theme';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 const { width, height } = Dimensions.get("window");
@@ -84,6 +84,7 @@ const [activeIndex, setActiveIndex] = useState(0);
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
+        
         onScroll={(event) => {
           const { contentOffset } = event.nativeEvent;
           const index = Math.round(contentOffset.x / width);
