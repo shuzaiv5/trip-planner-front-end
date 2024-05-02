@@ -86,7 +86,7 @@ const Recommendations = () => {
     
     data={recommendations}
     renderItem={(props) => renderItem({ ...props, navigation })}
-   
+    
     showsVerticalScrollIndicator={false}
     contentContainerStyle={{padding:width*0.01}}
     

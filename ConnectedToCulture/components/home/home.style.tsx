@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
         alignItems: 'flex-start',
         justifyContent: 'center',
-        
+        minHeight: height * 0.2,
                     
     },
     NoTripCompanentContainer:{
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
         alignItems: 'center',
         justifyContent: 'center',
+        minHeight: height * 0.2,
         
        
     },
