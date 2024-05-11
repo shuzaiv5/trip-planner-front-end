@@ -4,6 +4,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Card from '../../components/reusable/card/card';
 import { Recommendations } from '../../components';
+import Title from '../../components/reusable/title/title';
 
 type ExploreCountryProps = {
   navigation: {
@@ -11,30 +12,39 @@ type ExploreCountryProps = {
   };
 };
 
-interface postdata {
-  id: number,
-  title: string,
-  // postImage: any,
+interface PostData {
+  id: number;
+  title: string;
+  postImage: any;
 }
-  
-const postData: postdata[] = [
+
+const postData: PostData[] = [
   {
     id: 1,
     title: 'Outdoor adventures',
+    postImage: require('../../assets/images/backgrounds/Travel.png'),
   },
   {
     id: 2,
     title: 'Family friendly activities',
+    postImage: require('../../assets/images/backgrounds/Travel.png'),
   },
   {
     id: 3,
     title: 'Food and drink tours',
-  }
+    postImage: require('../../assets/images/backgrounds/Travel.png'),
+  },
 ];
 
 
 
+
 const ExploreCountry: React.FC<ExploreCountryProps> = ({ navigation }) => {
+
+  const clickHandler = () => {
+    navigation.navigate('more-explore');
+  }
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -61,19 +71,14 @@ const ExploreCountry: React.FC<ExploreCountryProps> = ({ navigation }) => {
             />
           </View>
         </View>
-        <View style={styles.midContainer}>
-          <Text style={styles.expText}>
-            Explore experiences
-          </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('more-explore')} >
-            <Text style={styles.txtMore}>
-              More
-            </Text>
-          </TouchableOpacity>
+        <View>
+          <Title name={"Explore experiences"} secondname={"More"} handleClick={clickHandler} />
         </View>
+
+
         <View style={styles.cardReusable}>
-        {postData?.map((item) => (
-            <Card key={item?.id} title={item?.title} />
+          {postData?.map((item) => (
+            <Card key={item?.id} title={item?.title} imageUrl={item?.postImage.toString()} />
           ))}
         </View>
         <View style={styles.recommended}>
@@ -90,6 +95,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 16,
     fontFamily: 'Almarai',
+    backgroundColor: '#FFFFFF',
   },
   menuContainer: {
     flexDirection: 'row',
@@ -119,7 +125,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 1.5,
-    elevation: 3, 
+    elevation: 3,
     marginTop: 20,
   },
   cardTitle: {
@@ -154,24 +160,24 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     top: 18
   },
-  midContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 20,
-    paddingHorizontal: 16,
-  },
-  expText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'black',
-    right: 12
-  },
-  txtMore: {
-    fontSize: 20,
-    color: 'black',
-  },
+  // midContainer: {
+  //   display: 'flex',
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  //   marginTop: 20,
+  //   paddingHorizontal: 16,
+  // },
+  // expText: {
+  //   fontSize: 20,
+  //   fontWeight: 'bold',
+  //   color: 'black',
+  //   right: 12
+  // },
+  // txtMore: {
+  //   fontSize: 20,
+  //   color: 'black',
+  // },
   cardReusable: {
     display: 'flex',
     flexDirection: 'row',

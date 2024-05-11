@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         fontWeight:'700',
         textAlign:'left',
         lineHeight:28.8,
-        fontFamily:'Almarai'
+        fontFamily:'Almarai',
     },
     ButtonContainer:{
         justifyContent: 'center',
