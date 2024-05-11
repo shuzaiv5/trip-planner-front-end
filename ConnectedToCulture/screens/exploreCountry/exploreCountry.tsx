@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Import FontAwesome
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Card from '../../components/reusable/card/card';
+import { Recommendations } from '../../components';
 
 type ExploreCountryProps = {
   navigation: {
@@ -9,33 +11,76 @@ type ExploreCountryProps = {
   };
 };
 
+interface postdata {
+  id: number,
+  title: string,
+  // postImage: any,
+}
+  
+const postData: postdata[] = [
+  {
+    id: 1,
+    title: 'Outdoor adventures',
+  },
+  {
+    id: 2,
+    title: 'Family friendly activities',
+  },
+  {
+    id: 3,
+    title: 'Food and drink tours',
+  }
+];
+
+
+
 const ExploreCountry: React.FC<ExploreCountryProps> = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.menuContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.iconContainer}>
-          <AntDesign name='left' style={styles.icon} />
-        </TouchableOpacity>
-        <Text style={styles.countryName}>South Africa</Text>
-      </View>
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Country Information</Text>
-        <View style={styles.content}>
-          <View style={styles.menu}>
-            <Text style={styles.menuItem}><FontAwesome name="money" style={styles.menuIcon} /> Currency</Text>
-            <Text style={styles.menuItem}><FontAwesome name="language" style={styles.menuIcon} /> Language</Text>
-            <Text style={styles.menuItem}><FontAwesome name="globe" style={styles.menuIcon} /> Timezone</Text>
-            <Text style={styles.menuItem}><FontAwesome name="money" style={styles.menuIcon} /> Average trip price</Text>
-            <Text style={styles.menuItem}><FontAwesome name="plane" style={styles.menuIcon} /> Flight time</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.menuContainer}>
+          <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.iconContainer}>
+            <AntDesign name='left' style={styles.icon} />
+          </TouchableOpacity>
+          <Text style={styles.countryName}>South Africa</Text>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Country Information</Text>
+          <View style={styles.content}>
+            <View style={styles.menu}>
+              <Text style={styles.menuItem}><FontAwesome name="money" style={styles.menuIcon} /> Currency</Text>
+              <Text style={styles.menuItem}><FontAwesome name="language" style={styles.menuIcon} /> Language</Text>
+              <Text style={styles.menuItem}><FontAwesome name="globe" style={styles.menuIcon} /> Timezone</Text>
+              <Text style={styles.menuItem}><FontAwesome name="money" style={styles.menuIcon} /> Average trip price</Text>
+              <Text style={styles.menuItem}><FontAwesome name="plane" style={styles.menuIcon} /> Flight time</Text>
+            </View>
+            <Image
+              source={require('../../assets/images/country/southAfrica/sa.jpg')}
+              style={styles.image}
+              resizeMode="cover"
+            />
           </View>
-          <Image
-            source={require('../../assets/images/country/southAfrica/sa.jpg')}
-            style={styles.image}
-            resizeMode="cover"
-          />
+        </View>
+        <View style={styles.midContainer}>
+          <Text style={styles.expText}>
+            Explore experiences
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('more-explore')} >
+            <Text style={styles.txtMore}>
+              More
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.cardReusable}>
+        {postData?.map((item) => (
+            <Card key={item?.id} title={item?.title} />
+          ))}
+        </View>
+        <View style={styles.recommended}>
+          <Recommendations />
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -74,7 +119,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 1.5,
-    elevation: 3,  // for Android
+    elevation: 3, 
     marginTop: 20,
   },
   cardTitle: {
@@ -109,6 +154,33 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     top: 18
   },
+  midContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
+    paddingHorizontal: 16,
+  },
+  expText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
+    right: 12
+  },
+  txtMore: {
+    fontSize: 20,
+    color: 'black',
+  },
+  cardReusable: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  recommended: {
+    marginTop: 26,
+    backgroundColor: 'white',
+  }
 });
 
 export default ExploreCountry;
