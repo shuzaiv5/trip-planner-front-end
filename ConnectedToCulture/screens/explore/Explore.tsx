@@ -46,7 +46,7 @@ const slides: SlideItem[] = [
   },
 ];
 
-const Explore: React.FC<ExploreCountryProps> =  ({navigation}) => {
+const Explore: React.FC<ExploreCountryProps> = ({ navigation }) => {
   const handleExplore = (country: string) => {
     // console.log(`Explore ${country}`);
     navigation.navigate('explore-country');

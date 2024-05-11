@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Import FontAwesome
 
 type ExploreCountryProps = {
   navigation: {
@@ -17,23 +18,22 @@ const ExploreCountry: React.FC<ExploreCountryProps> = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={styles.countryName}>South Africa</Text>
       </View>
-      <View style={styles.exploreContainer}>
-        <Text style={styles.exploreText}>Country information</Text>
-        
-      </View>
-      <View style={styles.content}>
-        <View style={styles.menu}>
-          <Text style={styles.menuItem}>Currency</Text>
-          <Text style={styles.menuItem}>Language</Text>
-          <Text style={styles.menuItem}>Timezone</Text>
-          <Text style={styles.menuItem}>Average trip price</Text>
-          <Text style={styles.menuItem}>Flight time</Text>
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Country Information</Text>
+        <View style={styles.content}>
+          <View style={styles.menu}>
+            <Text style={styles.menuItem}><FontAwesome name="money" style={styles.menuIcon} /> Currency</Text>
+            <Text style={styles.menuItem}><FontAwesome name="language" style={styles.menuIcon} /> Language</Text>
+            <Text style={styles.menuItem}><FontAwesome name="globe" style={styles.menuIcon} /> Timezone</Text>
+            <Text style={styles.menuItem}><FontAwesome name="money" style={styles.menuIcon} /> Average trip price</Text>
+            <Text style={styles.menuItem}><FontAwesome name="plane" style={styles.menuIcon} /> Flight time</Text>
+          </View>
+          <Image
+            source={require('../../assets/images/country/southAfrica/sa.jpg')}
+            style={styles.image}
+            resizeMode="cover"
+          />
         </View>
-        <Image
-          source={require('../../assets/images/country/southAfrica/sa.jpg')}
-          style={styles.image}
-          resizeMode="cover"
-        />
       </View>
     </View>
   );
@@ -44,13 +44,15 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingBottom: 16,
+    fontFamily: 'Almarai',
   },
   menuContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    right: 60,
     paddingBottom: 12,
+    right: 60,
+    marginTop: 15,
   },
   iconContainer: {
     padding: 8,
@@ -60,19 +62,26 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   countryName: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
     color: 'black',
   },
-  exploreContainer: {
-    // alignSelf: 'center',
-    paddingVertical: 12,
-    
+  card: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 1.5,
+    elevation: 3,  // for Android
+    marginTop: 20,
   },
-  exploreText: {
-    fontSize: 16,
-    color: 'black',
-    fontWeight: 'bold'
+  cardTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: 'black'
   },
   content: {
     flexDirection: 'row',
@@ -86,11 +95,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
     paddingVertical: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    marginRight: 8,
+    fontSize: 16,
+    color: 'black',
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 180,
+    height: 150,
     borderRadius: 8,
+    top: 18
   },
 });
 
