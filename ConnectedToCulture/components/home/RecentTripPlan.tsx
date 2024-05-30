@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React , {useEffect} from 'react'
 import styles from './home.style'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCalendarDays, faChartPie, faUserGroup } from '@fortawesome/free-solid-svg-icons'
@@ -11,11 +11,85 @@ import WidthSpacer from '../reusable/WidthSpacer'
 import { ReusableButton } from '..'
 import { Dimensions } from'react-native'
 
+
+import { useDispatch, useSelector } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../Redux/redux-hooks'
+import { fetchPlans } from '../../Redux/Action';
+import { AppDispatch,RootState} from "../../Redux/Store";
+import moment from 'moment-timezone';
+moment.tz.add('America/Los_Angeles|PST PDT|80 70|01010101010|1Lzm0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0');
+
 // Get the dimensions of the screen
 const { height, width } = Dimensions.get('window');
 
+
 const RecentTripPlan = ({navigation}: {navigation: any}) => {
     const { globalStyles, rowWithSpace } = globalStylesAndRowWithSpace;
+
+    const dispatch = useDispatch<AppDispatch>();;
+    const state = useAppSelector((state: RootState) => state.plans);
+
+  
+    useEffect(() => {
+      dispatch(fetchPlans());
+      }, [dispatch]);
+      
+      const renderTripName = (): JSX.Element[] | JSX.Element => {
+       if (state.loading) {
+          return <Text>Loading</Text>;
+       }
+       return(
+        <View>
+         {state.items.length > 0 ? <Text>{state.items[0].tripName}</Text> : (<Text>No data available</Text>)}
+        </View>);   
+      };
+    
+      //(state.items.map((item:any) => <Text key={item._id}>{item.tripName}</Text>))
+
+      const renderTripStartDate = (): JSX.Element[] | JSX.Element => {
+        if (state.loading) {
+           return <Text>Loading</Text>;
+        }
+        return(
+        <View>
+         {state.items.length > 0 ? 
+         <Text>{moment(state.items[0].tripStartDate).tz('America/Los_Angeles').format('MMM DD,YYYY')}</Text> : (<Text>No data available</Text>)}
+        </View>);  
+       };
+
+       const renderTripEndDate = (): JSX.Element[] | JSX.Element => {
+        if (state.loading) {
+           return <Text>Loading</Text>;
+        }
+        return(
+        <View>
+         {state.items.length > 0 ? 
+         <Text>{moment(state.items[0].tripEndDate).tz('America/Los_Angeles').format('MMM DD,YYYY')}</Text> : (<Text>No data available</Text>)}
+        </View>);  
+       };
+
+       const renderNumOfTravellers = (): JSX.Element[] | JSX.Element => {
+        if (state.loading) {
+           return <Text>Loading</Text>;
+        }
+        return(
+         <View>
+          {state.items.length > 0 ? <Text>{state.items[0].numOfTravelers}</Text> : (<Text>No data available</Text>)}
+         </View>);   
+       };
+
+       const renderTotalExpense = (): JSX.Element[] | JSX.Element => {
+        if (state.loading) {
+           return <Text>Loading</Text>;
+        }
+        return(
+         <View>
+          {state.items.length > 0 ? <Text>{state.items[0].totalExpense}</Text> : (<Text>No data available</Text>)}
+         </View>);   
+       };
+
+
+
   return (
     <View style={styles.CompanentContainer}>
     <View style={styles.TextContainer}>
@@ -25,23 +99,23 @@ const RecentTripPlan = ({navigation}: {navigation: any}) => {
     <View style={[rowWithSpace('space-between'),{marginBottom:width*0.01}]}>
         <View style={[styles.PlanCardInfo]}>
         <View style={[styles.TextContainer,{padding:0,paddingBottom:width*0.03}]}>
-        <Text style={styles.noTripPlanText}>Family Trip to Ghana</Text>
+        <Text style={styles.noTripPlanText}>{renderTripName()}</Text>
         </View>
         
         <View style={rowWithSpace('space-between')}>
         <FontAwesomeIcon icon={faCalendarDays} />
         <WidthSpacer width={10}/>
-        <Text style={styles.PlanCardInfoText}>Mar 6, 2024- Mar 12, 2024 </Text>
+        <Text style={styles.PlanCardInfoText}>{renderTripStartDate()}- {renderTripEndDate()} </Text>
         </View>
         <View style={rowWithSpace('space-between')}>
         <FontAwesomeIcon icon={faUserGroup} />
         <WidthSpacer width={10}/>
-        <Text style={styles.PlanCardInfoText}>5 Travelers </Text>
+        <Text style={styles.PlanCardInfoText}>{renderNumOfTravellers()} Travelers </Text>
         </View>
         <View style={rowWithSpace('space-between')}>
         <FontAwesomeIcon icon={faChartPie} />
         <WidthSpacer width={10}/>
-        <Text style={styles.PlanCardInfoText}>$ 1,000 </Text>
+        <Text style={styles.PlanCardInfoText}>$ {renderTotalExpense()} </Text>
         </View>
         
         </View>
