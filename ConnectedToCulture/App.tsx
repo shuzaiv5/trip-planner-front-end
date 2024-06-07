@@ -18,7 +18,13 @@ import COLORS from './constants/theme';
 import exploreCountry from './screens/exploreCountry/exploreCountry';
 import MoreExplore from './screens/explore/moreExplore/moreExplore';
 
+
+import { Provider } from 'react-redux';
+import { store } from './Redux/Store'
+
+
 function App(): React.JSX.Element {
+  
  // Set the status bar background color
 StatusBar.setBackgroundColor('white');
 
@@ -27,7 +33,7 @@ StatusBar.setBarStyle('dark-content');
 
   const Stack=createNativeStackNavigator();
   return (
-    
+    <Provider store = {store}>
   <NavigationContainer>
     <Stack.Navigator>
       <Stack.Screen name='Signin' component={Signin} options={{headerShown:false}} />
@@ -40,8 +46,10 @@ StatusBar.setBarStyle('dark-content');
       <Stack.Screen name='more-explore' component={MoreExplore} options={{headerShown:false}} />
     </Stack.Navigator>
   </NavigationContainer>
+  </Provider>
   );
 }
+
 
 
 export default App;

@@ -3,26 +3,36 @@ import { View, Text, FlatList } from 'react-native';
 import homeStyles from './home.style';
 import globalStylesAndRowWithSpace from '../../constants/global.style';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CountriesToExplore, HeightSpacer, NoTripPlan, Recommendations } from '../../components';
+import { CountriesToExplore, HeightSpacer, NoTripPlan, Recommendations,RecentTripPlan } from '../../components';
 
 const Home = ({ navigation }) => {
   const { globalStyles, rowWithSpace } = globalStylesAndRowWithSpace;
 
   // Dummy data for FlatList
   const data = [
-    { id: '1', type: 'NoTripPlan' },
+    //{ id: '1', type: 'NoTripPlan' },
+    { id: '1', type: 'RecentTripPlan' },
     { id: '2', type: 'CountriesToExplore' },
     { id: '3', type: 'Recommendations' },
+
+    
     // Add more data items as needed
   ];
 
   // Render item function for FlatList
   const renderItem = ({ item }) => {
     switch(item.type) {
-      case 'NoTripPlan':
+      // case 'NoTripPlan':
+      //   return (
+      //     <>
+      //       <NoTripPlan navigation={navigation} />
+      //       <HeightSpacer height={20} />
+      //     </>
+      //   );
+      case 'RecentTripPlan':
         return (
           <>
-            <NoTripPlan navigation={navigation} />
+            <RecentTripPlan navigation={navigation} />
             <HeightSpacer height={20} />
           </>
         );
@@ -40,6 +50,7 @@ const Home = ({ navigation }) => {
             <HeightSpacer height={20} />
           </>
         );
+    
       default:
         return null;
     }
