@@ -3,6 +3,11 @@ import React from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Title from '../../../components/reusable/title/title';
 import Card from '../../../components/reusable/card/card';
+import { ReusableButton } from '../../../components';
+import COLORS from '../../../constants/theme';
+
+import { Dimensions } from "react-native";
+const { width, height } = Dimensions.get("window");
 
 type MoreExploreProps = {
   navigation: {
@@ -104,6 +109,20 @@ const MoreExplore: React.FC<MoreExploreProps> = ({navigation}) => {
           </View>
         ))}
         </View>
+        <View style={styles.buttonContainer}>
+        <ReusableButton 
+         btnText='Load More'
+         backgroundColor={COLORS.primary}
+         textColor={COLORS.white}
+         size={18}
+         borderColor={COLORS.primary}
+         borderWidth={1}
+         width={width * 0.40}
+         paddingHorizantal={15}
+         paddingVertical={5}
+         onPress={() => navigation.navigate('adventures')}
+        />
+      </View>
     </View>
   )
 }
@@ -144,7 +163,11 @@ const styles = StyleSheet.create({
   },
   imagefixing: {
     marginTop: 12
-  }
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    marginTop: 29,
+  },
 })
 
 export default MoreExplore

@@ -17,6 +17,9 @@ import BottomTabNavigation from './navigation/BottomTabNavigation';
 import COLORS from './constants/theme';
 import exploreCountry from './screens/exploreCountry/exploreCountry';
 import MoreExplore from './screens/explore/moreExplore/moreExplore';
+import Adventures from './screens/explore/adventures/Adventures.';
+import Filter from './screens/explore/filter/Filter';
+import DetailsPage from './screens/explore/details/DetailsPage';
 
 
 import { Provider } from 'react-redux';
@@ -44,6 +47,9 @@ StatusBar.setBarStyle('dark-content');
       <Stack.Screen name='Welcome' component={Welcome} options={{headerShown:false}} />
       <Stack.Screen name='explore-country' component={exploreCountry} options={{headerShown:false}} />
       <Stack.Screen name='more-explore' component={MoreExplore} options={{headerShown:false}} />
+      <Stack.Screen name='adventures' component={Adventures} options={{headerShown:false}} />
+      <Stack.Screen name='FIlter' component={Filter} options={{headerShown:false}} />
+      <Stack.Screen name='Details' component={DetailsPage} options={{headerShown:false}} />
     </Stack.Navigator>
   </NavigationContainer>
   </Provider>
