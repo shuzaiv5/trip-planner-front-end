@@ -1,0 +1,76 @@
+name: CI/CD for iOS App
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on push to main branch
+  pull_request:
+    branches:
+      - main  # Trigger the workflow on pull request to main branch
+
+jobs:
+  build:
+    runs-on: macos-latest  # Specify the OS to use for the job
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Ruby environment
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7  # Specify Ruby version
+
+      # Step 3: Install Bundler
+      - name: Install Bundler
+        run: gem install bundler
+
+      # Step 4: Install CocoaPods dependencies
+      - name: Install CocoaPods
+        run: bundle exec pod install
+
+      # Step 5: Install project dependencies defined in Gemfile
+      - name: Install dependencies
+        run: bundle install
+
+      # Step 6: Set up Xcode
+      - name: Set up Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+      # Step 7: Increment build number
+      - name: Increment build number
+        run: agvtool new-version -all $(date +%Y%m%d%H%M)  # Automatically update the build number
+
+      # Step 8: Build the iOS app
+      - name: Build app
+        run: |
+          xcodebuild -workspace ConnectedToCulture.xcworkspace \  # Replace with your workspace file name
+                      -scheme ConnectedToCulture \  # Replace with your scheme name
+                      -sdk iphoneos \  # Specify the SDK
+                      -configuration Release \  # Specify the build configuration
+                      -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \  # Specify the archive path
+                      clean archive  # Clean and archive the build
+          xcodebuild -exportArchive \  # Export the archived build
+                      -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \  # Specify the archive path
+                      -exportOptionsPlist exportOptions.plist \  # Specify the export options
+                      -exportPath ${{ github.workspace }}/build  # Specify the export path
+
+      # Step 9: Upload the IPA to Firebase App Distribution
+      - name: Upload to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}  # Firebase App ID from secrets
+          token: ${{ secrets.FIREBASE_TOKEN }}  # Firebase token from secrets
+          groups: testers  # Distribution group
+          file: ${{ github.workspace }}/build/ConnectedToCulture.ipa
+
+      # Step 10: Send a notification via Slack
+      - name: Notify via Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}  # Job status (success or failure)
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took  # Fields to include in the message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}  # Slack Webhook URL from secrets
