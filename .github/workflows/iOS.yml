@@ -1,4 +1,4 @@
-name: CI/CD for iOS App
+name: CI for iOS 
 
 on:
   push:
@@ -27,25 +27,25 @@ jobs:
       - name: Install Bundler
         run: gem install bundler -v 2.4.22  # Specify compatible Bundler version
 
-      # Step 4: Install project dependencies defined in Gemfile
-      - name: Install dependencies
-        run: bundle install
-
-      # Step 5: Install CocoaPods dependencies
+      # Step 4: Install CocoaPods dependencies
       - name: Install CocoaPods
-        run: bundle exec pod install
+        run: |
+          cd ${{ github.workspace }}/ios  # Change to the directory where Podfile is located
+          pod install
+          pod --version  # Add this line to output CocoaPods version
 
-      # Step 6: Set up Xcode
+      # Step 5: Set up Xcode
       - name: Set up Xcode
         run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 
-      # Step 7: Increment build number
+      # Step 6: Increment build number
       - name: Increment build number
         run: agvtool new-version -all $(date +%Y%m%d%H%M)  # Automatically update the build number
 
-      # Step 8: Build the iOS app
+      # Step 7: Build the iOS app
       - name: Build app
         run: |
+          cd ${{ github.workspace }}/ios  # Change to the directory where your Xcode workspace is located
           xcodebuild -workspace ConnectedToCulture.xcworkspace \  # Replace with your workspace file name
                       -scheme ConnectedToCulture \  # Replace with your scheme name
                       -sdk iphoneos \  # Specify the SDK
@@ -54,10 +54,10 @@ jobs:
                       clean archive  # Clean and archive the build
           xcodebuild -exportArchive \  # Export the archived build
                       -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \  # Specify the archive path
-                      -exportOptionsPlist ConnectedToCulture/ios/exportOptions.plist \  # Specify the export options
+                      -exportOptionsPlist ${{ github.workspace }}/ios/exportOptions.plist \  # Specify the export options
                       -exportPath ${{ github.workspace }}/build  # Specify the export path
 
-      # Step 9: Upload the IPA to Firebase App Distribution
+      # Step 8: Upload the IPA to Firebase App Distribution
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
@@ -65,5 +65,3 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}  # Firebase token from secrets
           groups: testers  # Distribution group
           file: ${{ github.workspace }}/build/ConnectedToCulture.ipa
-
-    
