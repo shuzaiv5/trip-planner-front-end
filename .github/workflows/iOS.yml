@@ -1,4 +1,4 @@
-name: CI/CD for iOS App
+name: CI for iOS App
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
     steps:
       # Step 1: Check out the repository
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4  # Updated to latest version
 
       # Step 2: Set up Ruby environment
       - name: Set up Ruby
@@ -27,13 +27,13 @@ jobs:
       - name: Install Bundler
         run: gem install bundler
 
-      # Step 4: Install CocoaPods dependencies
-      - name: Install CocoaPods
-        run: bundle exec pod install
-
-      # Step 5: Install project dependencies defined in Gemfile
+      # Step 4: Install project dependencies defined in Gemfile
       - name: Install dependencies
         run: bundle install
+
+      # Step 5: Install CocoaPods dependencies
+      - name: Install CocoaPods
+        run: bundle exec pod install
 
       # Step 6: Set up Xcode
       - name: Set up Xcode
@@ -54,14 +54,14 @@ jobs:
                       clean archive  # Clean and archive the build
           xcodebuild -exportArchive \  # Export the archived build
                       -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \  # Specify the archive path
-                      -exportOptionsPlist exportOptions.plist \  # Specify the export options
+                      -exportOptionsPlist ConnectedToCulture/ios/exportOptions.plist \  # Specify the export options
                       -exportPath ${{ github.workspace }}/build  # Specify the export path
 
       # Step 9: Upload the IPA to Firebase App Distribution
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          appId: ${{ secrets.FIREBASE_APP_ID }}  # Firebase App ID from secrets
+          appId: ${{ secrets.FIREBASE_IOS_APP_ID }}  # Firebase App ID from secrets
           token: ${{ secrets.FIREBASE_TOKEN }}  # Firebase token from secrets
           groups: testers  # Distribution group
           file: ${{ github.workspace }}/build/ConnectedToCulture.ipa
