@@ -1,4 +1,4 @@
-name: CI for iOS App
+name: CI/CD for iOS App
 
 on:
   push:
@@ -21,11 +21,11 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7  # Specify Ruby version
+          ruby-version: '2.7'  # Specify Ruby version
 
       # Step 3: Install Bundler
       - name: Install Bundler
-        run: gem install bundler
+        run: gem install bundler -v 2.4.22  # Specify compatible Bundler version
 
       # Step 4: Install project dependencies defined in Gemfile
       - name: Install dependencies
@@ -66,11 +66,4 @@ jobs:
           groups: testers  # Distribution group
           file: ${{ github.workspace }}/build/ConnectedToCulture.ipa
 
-      # Step 10: Send a notification via Slack
-      - name: Notify via Slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}  # Job status (success or failure)
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took  # Fields to include in the message
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}  # Slack Webhook URL from secrets
+    
