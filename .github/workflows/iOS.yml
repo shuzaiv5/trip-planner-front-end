@@ -1,4 +1,4 @@
-name: CI for iOS 
+name: CI for iOS
 
 on:
   push:
@@ -51,6 +51,8 @@ jobs:
           agvtool new-version -all $(date +%Y%m%d%H%M)
 
       - name: Build app
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           ls -alh  # List files for debugging
@@ -60,9 +62,11 @@ jobs:
                       -configuration Release \
                       -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
                       clean archive \
+                      CODE_SIGN_STYLE=Manual \
                       CODE_SIGN_IDENTITY="Apple Distribution" \
                       PROVISIONING_PROFILE_SPECIFIER="ConnectedToCulture_C2C_Ad_Hoc" \
-                      DEVELOPMENT_TEAM="24832U2HJT"
+                      DEVELOPMENT_TEAM="24832U2HJT" \
+                      OTHER_CODE_SIGN_FLAGS="--allowProvisioningUpdates"
           xcodebuild -exportArchive \
                       -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
                       -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
