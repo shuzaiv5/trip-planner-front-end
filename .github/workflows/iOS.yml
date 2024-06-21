@@ -2,11 +2,9 @@ name: CI for iOS
 
 on:
   push:
-    branches:
-      - main  # Trigger the workflow on push to main branch
+    branches: [ "main" ]  # Trigger the workflow on push to main branch
   pull_request:
-    branches:
-      - main  # Trigger the workflow on pull request to main branch
+    branches: [ "main" ]  # Trigger the workflow on pull request to main branch
 
 jobs:
   build:
@@ -14,8 +12,7 @@ jobs:
 
     steps:
       # Step 1: Check out the repository
-      - name: Checkout repository
-        uses: actions/checkout@v4  # Updated to latest version
+      - uses: actions/checkout@v4
 
       # Step 2: Set up Ruby environment
       - name: Set up Ruby
@@ -65,5 +62,3 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}  # Firebase token from secrets
           groups: testers  # Distribution group
           file: ${{ github.workspace }}/build/ConnectedToCulture.ipa
-
-   
