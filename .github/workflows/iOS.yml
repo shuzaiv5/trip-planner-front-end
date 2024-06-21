@@ -40,6 +40,7 @@ jobs:
       - name: Install CocoaPods
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios  # Change to the directory where Podfile is located
+          npm install  # Install node dependencies needed by pod install
           pod install
           pod --version  # Add this line to output CocoaPods version
 
@@ -82,3 +83,5 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}  # Firebase token from secrets
           groups: testers  # Distribution group
           file: ${{ github.workspace }}/build/ConnectedToCulture.ipa
+
+   
