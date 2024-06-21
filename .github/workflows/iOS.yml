@@ -64,6 +64,7 @@ jobs:
       - name: Build app
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios  # Change to the directory where your Xcode workspace is located
+          ls -alh  # List files in the current directory for debugging
           xcodebuild -workspace ConnectedToCulture.xcworkspace \  # Replace with your workspace file name
                       -scheme ConnectedToCulture \  # Replace with your scheme name
                       -sdk iphoneos \  # Specify the SDK
@@ -84,4 +85,4 @@ jobs:
           groups: testers  # Distribution group
           file: ${{ github.workspace }}/build/ConnectedToCulture.ipa
 
-   
+     
