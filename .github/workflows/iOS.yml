@@ -60,10 +60,9 @@ jobs:
                       -configuration Release \
                       -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
                       clean archive \
-                      CODE_SIGN_IDENTITY="Apple Distribution: A Management Group Consulting LLC" \
+                      CODE_SIGN_IDENTITY="Apple Distribution" \
                       PROVISIONING_PROFILE_SPECIFIER="ConnectedToCulture_C2C_Ad_Hoc" \
-                      DEVELOPMENT_TEAM="24832U2HJT" \
-                      OTHER_CODE_SIGN_FLAGS="--allowProvisioningUpdates"
+                      DEVELOPMENT_TEAM="24832U2HJT"
           xcodebuild -exportArchive \
                       -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
                       -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
@@ -76,4 +75,3 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: testers
           file: ${{ github.workspace }}/build/ConnectedToCulture.ipa
-
