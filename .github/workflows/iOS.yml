@@ -47,13 +47,19 @@ jobs:
       - name: Set up Xcode
         run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 
-      # Step 8: Increment build number
+      # Step 8: List Xcode Schemes
+      - name: List Xcode Schemes
+        run: |
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
+          xcodebuild -list
+
+      # Step 9: Increment build number
       - name: Increment build number
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios  # Change to the directory where your Xcode project file is located
           agvtool new-version -all $(date +%Y%m%d%H%M)  # Automatically update the build number
 
-      # Step 9: Build the iOS app
+      # Step 10: Build the iOS app
       - name: Build app
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios  # Change to the directory where your Xcode workspace is located
@@ -68,7 +74,7 @@ jobs:
                       -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \  # Specify the export options
                       -exportPath ${{ github.workspace }}/build  # Specify the export path
 
-      # Step 10: Upload the IPA to Firebase App Distribution
+      # Step 11: Upload the IPA to Firebase App Distribution
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
