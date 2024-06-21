@@ -27,7 +27,7 @@ jobs:
       # Step 4: Install CocoaPods dependencies
       - name: Install CocoaPods
         run: |
-          cd ${{ github.workspace }}/ios  # Change to the directory where Podfile is located
+          cd ${{ github.workspace }}/ConnectedToCulture/ios  # Change to the directory where Podfile is located
           pod install
           pod --version  # Add this line to output CocoaPods version
 
@@ -42,7 +42,7 @@ jobs:
       # Step 7: Build the iOS app
       - name: Build app
         run: |
-          cd ${{ github.workspace }}/ios  # Change to the directory where your Xcode workspace is located
+          cd ${{ github.workspace }}/ConnectedToCulture/ios  # Change to the directory where your Xcode workspace is located
           xcodebuild -workspace ConnectedToCulture.xcworkspace \  # Replace with your workspace file name
                       -scheme ConnectedToCulture \  # Replace with your scheme name
                       -sdk iphoneos \  # Specify the SDK
@@ -51,7 +51,7 @@ jobs:
                       clean archive  # Clean and archive the build
           xcodebuild -exportArchive \  # Export the archived build
                       -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \  # Specify the archive path
-                      -exportOptionsPlist ${{ github.workspace }}/ios/exportOptions.plist \  # Specify the export options
+                      -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \  # Specify the export options
                       -exportPath ${{ github.workspace }}/build  # Specify the export path
 
       # Step 8: Upload the IPA to Firebase App Distribution
@@ -62,3 +62,5 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}  # Firebase token from secrets
           groups: testers  # Distribution group
           file: ${{ github.workspace }}/build/ConnectedToCulture.ipa
+
+     
