@@ -65,3 +65,5 @@ jobs:
           token: ${{ secrets.FIREBASE_TOKEN }}  # Firebase token from secrets
           groups: testers  # Distribution group
           file: ${{ github.workspace }}/build/ConnectedToCulture.ipa
+
+   
