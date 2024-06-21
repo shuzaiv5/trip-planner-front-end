@@ -2,87 +2,73 @@ name: CI for iOS
 
 on:
   push:
-    branches: [ "main" ]  # Trigger the workflow on push to main branch
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]  # Trigger the workflow on pull request to main branch
+    branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: macos-latest  # Specify the OS to use for the job
+    runs-on: macos-latest
 
     steps:
-      # Step 1: Check out the repository
       - uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20.14.0'
 
-      # Step 3: Install npm dependencies
       - name: Install npm dependencies
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture
           npm install
 
-      # Step 4: Set up Ruby environment
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7'  # Specify Ruby version
+          ruby-version: '2.7'
 
-      # Step 5: Install Bundler
       - name: Install Bundler
-        run: gem install bundler -v 2.4.22  # Specify compatible Bundler version
+        run: gem install bundler -v 2.4.22
 
-      # Step 6: Install CocoaPods dependencies
       - name: Install CocoaPods
         run: |
-          cd ${{ github.workspace }}/ConnectedToCulture/ios  # Change to the directory where Podfile is located
-          npm install  # Install node dependencies needed by pod install
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
           pod install
-          pod --version  # Add this line to output CocoaPods version
+          pod --version
 
-      # Step 7: Set up Xcode
       - name: Set up Xcode
         run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 
-      # Step 8: List Xcode Schemes
       - name: List Xcode Schemes
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           xcodebuild -list
 
-      # Step 9: Increment build number
       - name: Increment build number
         run: |
-          cd ${{ github.workspace }}/ConnectedToCulture/ios  # Change to the directory where your Xcode project file is located
-          agvtool new-version -all $(date +%Y%m%d%H%M)  # Automatically update the build number
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
+          agvtool new-version -all $(date +%Y%m%d%H%M)
 
-      # Step 10: Build the iOS app
       - name: Build app
         run: |
-          cd ${{ github.workspace }}/ConnectedToCulture/ios  # Change to the directory where your Xcode workspace is located
-          ls -alh  # List files in the current directory for debugging
-          xcodebuild -workspace ConnectedToCulture.xcworkspace \  # Replace with your workspace file name
-                      -scheme ConnectedToCulture \  # Replace with your scheme name
-                      -sdk iphoneos \  # Specify the SDK
-                      -configuration Release \  # Specify the build configuration
-                      -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \  # Specify the archive path
-                      clean archive  # Clean and archive the build
-          xcodebuild -exportArchive \  # Export the archived build
-                      -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \  # Specify the archive path
-                      -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \  # Specify the export options
-                      -exportPath ${{ github.workspace }}/build  # Specify the export path
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
+          ls -alh  # List files for debugging
+          xcodebuild -workspace ConnectedToCulture.xcworkspace \
+                      -scheme ConnectedToCulture \
+                      -sdk iphoneos \
+                      -configuration Release \
+                      -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
+                      clean archive
+          xcodebuild -exportArchive \
+                      -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
+                      -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
+                      -exportPath ${{ github.workspace }}/build
 
-      # Step 11: Upload the IPA to Firebase App Distribution
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          appId: ${{ secrets.FIREBASE_IOS_APP_ID }}  # Firebase App ID from secrets
-          token: ${{ secrets.FIREBASE_TOKEN }}  # Firebase token from secrets
-          groups: testers  # Distribution group
+          appId: ${{ secrets.FIREBASE_IOS_APP_ID }}
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          groups: testers
           file: ${{ github.workspace }}/build/ConnectedToCulture.ipa
-
-     
