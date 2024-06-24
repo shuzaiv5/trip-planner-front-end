@@ -1,5 +1,6 @@
 name: CI for iOS
 
+# Triggers the CI workflow on push or pull request events to the main branch
 on:
   push:
     branches: [ "main" ]
@@ -8,48 +9,59 @@ on:
 
 jobs:
   build:
+    # Specifies that the job will run on the latest macOS runner
     runs-on: macos-latest
 
     steps:
+      # Checks out the repository to the GitHub Actions runner
       - uses: actions/checkout@v4
 
+      # Sets up Node.js with the specified version
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20.14.0'
 
+      # Installs npm dependencies
       - name: Install npm dependencies
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture
           npm install
 
+      # Sets up Ruby with the specified version
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7'
 
+      # Installs Bundler with the specified version
       - name: Install Bundler
         run: gem install bundler -v 2.4.22
 
+      # Installs CocoaPods and checks its version
       - name: Install CocoaPods
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           pod install
           pod --version
 
+      # Sets up Xcode by selecting the default Xcode developer directory
       - name: Set up Xcode
         run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 
+      # Lists the Xcode schemes in the project for debugging
       - name: List Xcode Schemes
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           xcodebuild -list
 
+      # Increments the build number using agvtool
       - name: Increment build number
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           agvtool new-version -all $(date +%Y%m%d%H%M)
 
+      # Builds the iOS app using xcodebuild and exports the archive
       - name: Build app
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
@@ -72,6 +84,7 @@ jobs:
                       -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
                       -exportPath ${{ github.workspace }}/build
 
+      # Uploads the built .ipa file to Firebase App Distribution
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
