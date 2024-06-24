@@ -53,14 +53,19 @@ jobs:
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           xcodebuild -list
 
-      # Step 9: Decode and Install Provisioning Profile
+      # Step 9: Create Provisioning Profiles directory
+      - name: Create Provisioning Profiles directory
+        run: |
+          mkdir -p /Users/runner/Library/MobileDevice/Provisioning\ Profiles
+
+      # Step 10: Decode and Install Provisioning Profile
       - name: Decode and Install Provisioning Profile
         env:
           PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
         run: |
           echo "$PROVISIONING_PROFILE" | base64 --decode > /Users/runner/Library/MobileDevice/Provisioning\ Profiles/ConnectedToCulture_C2C_Ad_Hoc.mobileprovision
 
-      # Step 10: Decode and Install Certificate
+      # Step 11: Decode and Install Certificate
       - name: Decode and Install Certificate
         env:
           CERTIFICATE: ${{ secrets.IOS_CERTIFICATE }}
@@ -69,13 +74,13 @@ jobs:
           echo "$CERTIFICATE" | base64 --decode > certificate.p12
           security import certificate.p12 -P "$CERTIFICATE_PASSWORD" -A
 
-      # Step 11: Increment build number
+      # Step 12: Increment build number
       - name: Increment build number
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           agvtool new-version -all $(date +%Y%m%d%H%M)
 
-      # Step 12: Build the app
+      # Step 13: Build the app
       - name: Build app
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
@@ -96,7 +101,7 @@ jobs:
                       -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
                       -exportPath ${{ github.workspace }}/build
 
-      # Step 13: Upload the app to Firebase App Distribution
+      # Step 14: Upload the app to Firebase App Distribution
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
