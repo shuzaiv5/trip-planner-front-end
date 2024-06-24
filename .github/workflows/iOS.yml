@@ -1,70 +1,82 @@
 name: CI for iOS
 
-# Triggers the CI workflow on push or pull request events to the main branch
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-    # Specifies that the job will run on the latest macOS runner
     runs-on: macos-latest
 
     steps:
-      # Checks out the repository to the GitHub Actions runner
+      # Step 1: Checkout the repository
       - uses: actions/checkout@v4
 
-      # Sets up Node.js with the specified version
+      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20.14.0'
 
-      # Installs npm dependencies
+      # Step 3: Install npm dependencies
       - name: Install npm dependencies
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture
           npm install
 
-      # Sets up Ruby with the specified version
+      # Step 4: Set up Ruby environment
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7'
 
-      # Installs Bundler with the specified version
+      # Step 5: Install Bundler
       - name: Install Bundler
         run: gem install bundler -v 2.4.22
 
-      # Installs CocoaPods and checks its version
+      # Step 6: Install CocoaPods dependencies
       - name: Install CocoaPods
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           pod install
           pod --version
 
-      # Sets up Xcode by selecting the default Xcode developer directory
+      # Step 7: Set up Xcode path
       - name: Set up Xcode
         run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 
-      # Lists the Xcode schemes in the project for debugging
+      # Step 8: List Xcode Schemes for debugging
       - name: List Xcode Schemes
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           xcodebuild -list
 
-      # Increments the build number using agvtool
+      # Step 9: Decode and Install Provisioning Profile
+      - name: Decode and Install Provisioning Profile
+        env:
+          PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
+        run: |
+          echo "$PROVISIONING_PROFILE" | base64 --decode > /Users/runner/Library/MobileDevice/Provisioning\ Profiles/ConnectedToCulture_C2C_Ad_Hoc.mobileprovision
+
+      # Step 10: Decode and Install Certificate
+      - name: Decode and Install Certificate
+        env:
+          CERTIFICATE: ${{ secrets.IOS_CERTIFICATE }}
+          CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+        run: |
+          echo "$CERTIFICATE" | base64 --decode > certificate.p12
+          security import certificate.p12 -P "$CERTIFICATE_PASSWORD" -A
+
+      # Step 11: Increment build number
       - name: Increment build number
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           agvtool new-version -all $(date +%Y%m%d%H%M)
 
-      # Builds the iOS app using xcodebuild and exports the archive
+      # Step 12: Build the app
       - name: Build app
-        env:
-          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           ls -alh  # List files for debugging
@@ -84,7 +96,7 @@ jobs:
                       -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
                       -exportPath ${{ github.workspace }}/build
 
-      # Uploads the built .ipa file to Firebase App Distribution
+      # Step 13: Upload the app to Firebase App Distribution
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
