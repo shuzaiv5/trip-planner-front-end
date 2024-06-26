@@ -33,7 +33,6 @@ jobs:
           ruby-version: '2.7'
 
       # Step 5: Install Bundler
-      - name: Install Bundler
         run: gem install bundler -v 2.4.22
 
       # Step 6: Install CocoaPods dependencies
@@ -63,7 +62,7 @@ jobs:
         env:
           PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
         run: |
-          echo "$PROVISIONING_PROFILE" | base64 --decode > /Users/runner/Library/MobileDevice/Provisioning\ Profiles/ConnectedToCulture_C2C_Ad_Hoc.mobileprovision
+          echo "$PROVISIONING_PROFILE" | base64 --decode > /Users/runner/Library/MobileDevice/Provisioning\ Profiles/ConnectedToCulture_C2C_ad_hoc.mobileprovision
 
       # Step 11: Decode and Install Certificate
       - name: Decode and Install Certificate
@@ -93,8 +92,9 @@ jobs:
                       clean archive \
                       CODE_SIGN_STYLE=Manual \
                       CODE_SIGN_IDENTITY="Apple Distribution" \
-                      PROVISIONING_PROFILE_SPECIFIER="ConnectedToCulture_C2C_Ad_Hoc" \
+                      PROVISIONING_PROFILE_SPECIFIER="ConnectedToCulture_C2C_ad_hoc" \
                       DEVELOPMENT_TEAM="24832U2HJT" \
+                      PRODUCT_BUNDLE_IDENTIFIER="com.ConnectedToCulture.C2C" \
                       OTHER_CODE_SIGN_FLAGS="--allowProvisioningUpdates"
           xcodebuild -exportArchive \
                       -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
