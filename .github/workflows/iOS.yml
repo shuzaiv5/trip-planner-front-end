@@ -18,14 +18,27 @@ jobs:
         with:
           node-version: '20.14.0'
 
+      - name: Debug - List current directory
+        run: |
+          echo "Current Directory: $(pwd)"
+          echo "Listing files in current directory:"
+          ls -alh
+
+      - name: Debug - List repository structure
+        run: |
+          echo "Listing files in repository root:"
+          ls -alh ${{ github.workspace }}
+          echo "Listing files in ConnectedToCulture directory:"
+          ls -alh ${{ github.workspace }}/ConnectedToCulture
+
       - name: Install npm dependencies
         run: |
-          cd ${{ github.workspace }}/trip-planner-front-end/ConnectedToCulture
+          cd ${{ github.workspace }}/ConnectedToCulture
           npm install --verbose 2>&1 | tee npm_install.log
 
       - name: Display npm install log on failure
         if: failure()
-        run: cat ${{ github.workspace }}/trip-planner-front-end/ConnectedToCulture/npm_install.log
+        run: cat ${{ github.workspace }}/ConnectedToCulture/npm_install.log
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -38,7 +51,7 @@ jobs:
       - name: Install CocoaPods
         run: |
           sudo gem install cocoapods
-          cd ${{ github.workspace }}/trip-planner-front-end/ConnectedToCulture/ios
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
           pod install --repo-update
           pod --version
 
@@ -47,7 +60,7 @@ jobs:
 
       - name: List Xcode Schemes
         run: |
-          cd ${{ github.workspace }}/trip-planner-front-end/ConnectedToCulture/ios
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
           xcodebuild -list
 
       - name: Create Provisioning Profiles directory
@@ -69,21 +82,21 @@ jobs:
 
       - name: Clean build cache
         run: |
-          cd ${{ github.workspace }}/trip-planner-front-end/ConnectedToCulture/ios
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
           xcodebuild clean -workspace ConnectedToCulture.xcworkspace -scheme ConnectedToCulture -configuration Release
 
       - name: Ensure script has execute permission
         run: |
-          chmod +x ${{ github.workspace }}/trip-planner-front-end/ConnectedToCulture/ios/Pods/Target\ Support\ Files/Pods-ConnectedToCulture/Pods-ConnectedToCulture-frameworks.sh
+          chmod +x ${{ github.workspace }}/ConnectedToCulture/ios/Pods/Target\ Support\ Files/Pods-ConnectedToCulture/Pods-ConnectedToCulture-frameworks.sh
 
       - name: Increment build number
         run: |
-          cd ${{ github.workspace }}/trip-planner-front-end/ConnectedToCulture/ios
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
           agvtool new-version -all $(date +%Y%m%d%H%M)
 
       - name: Build app
         run: |
-          cd ${{ github.workspace }}/trip-planner-front-end/ConnectedToCulture/ios
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
           ls -alh
           xcodebuild -workspace ConnectedToCulture.xcworkspace \
                       -scheme ConnectedToCulture \
@@ -100,7 +113,7 @@ jobs:
                       GCC_WARN_INHIBIT_ALL_WARNINGS=YES
           xcodebuild -exportArchive \
                       -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
-                      -exportOptionsPlist ${{ github.workspace }}/trip-planner-front-end/ConnectedToCulture/ios/exportOptions.plist \
+                      -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
                       -exportPath ${{ github.workspace }}/build
 
       - name: Upload to Firebase App Distribution
