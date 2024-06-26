@@ -11,61 +11,50 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      # Step 1: Checkout the repository
       - uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20.14.0'
 
-      # Step 3: Install npm dependencies
       - name: Install npm dependencies
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture
           npm install
 
-      # Step 4: Set up Ruby environment
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7'
 
-      # Step 5: Install Bundler
       - name: Install Bundler
         run: gem install bundler -v 2.4.22
 
-      # Step 6: Install CocoaPods dependencies
       - name: Install CocoaPods
         run: |
+          sudo gem install cocoapods
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           pod install
           pod --version
 
-      # Step 7: Set up Xcode path
       - name: Set up Xcode
         run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 
-      # Step 8: List Xcode Schemes for debugging
       - name: List Xcode Schemes
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           xcodebuild -list
 
-      # Step 9: Create Provisioning Profiles directory
       - name: Create Provisioning Profiles directory
-        run: |
-          mkdir -p /Users/runner/Library/MobileDevice/Provisioning\ Profiles
+        run: mkdir -p /Users/runner/Library/MobileDevice/Provisioning\ Profiles
 
-      # Step 10: Decode and Install Provisioning Profile
       - name: Decode and Install Provisioning Profile
         env:
           PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
         run: |
           echo "$PROVISIONING_PROFILE" | base64 --decode > /Users/runner/Library/MobileDevice/Provisioning\ Profiles/ConnectedToCulture_C2C_ad_hoc.mobileprovision
 
-      # Step 11: Decode and Install Certificate
       - name: Decode and Install Certificate
         env:
           CERTIFICATE: ${{ secrets.IOS_CERTIFICATE }}
@@ -74,17 +63,24 @@ jobs:
           echo "$CERTIFICATE" | base64 --decode > certificate.p12
           security import certificate.p12 -P "$CERTIFICATE_PASSWORD" -A
 
-      # Step 12: Increment build number
+      - name: Clean build cache
+        run: |
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
+          xcodebuild clean -workspace ConnectedToCulture.xcworkspace -scheme ConnectedToCulture -configuration Release
+
+      - name: Ensure script has execute permission
+        run: |
+          chmod +x ${{ github.workspace }}/ConnectedToCulture/ios/Pods/Target\ Support\ Files/Pods-ConnectedToCulture/Pods-ConnectedToCulture-frameworks.sh
+
       - name: Increment build number
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           agvtool new-version -all $(date +%Y%m%d%H%M)
 
-      # Step 13: Build the app
       - name: Build app
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
-          ls -alh  # List files for debugging
+          ls -alh
           xcodebuild -workspace ConnectedToCulture.xcworkspace \
                       -scheme ConnectedToCulture \
                       -sdk iphoneos \
@@ -102,7 +98,6 @@ jobs:
                       -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
                       -exportPath ${{ github.workspace }}/build
 
-      # Step 14: Upload the app to Firebase App Distribution
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
