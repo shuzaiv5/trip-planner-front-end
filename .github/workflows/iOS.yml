@@ -110,11 +110,13 @@ jobs:
                       DEVELOPMENT_TEAM="24832U2HJT" \
                       PRODUCT_BUNDLE_IDENTIFIER="com.ConnectedToCulture.C2C" \
                       OTHER_CODE_SIGN_FLAGS="--allowProvisioningUpdates" \
-                      GCC_WARN_INHIBIT_ALL_WARNINGS=YES
+                      GCC_WARN_INHIBIT_ALL_WARNINGS=YES \
+                      | tee xcodebuild.log
           xcodebuild -exportArchive \
                       -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
                       -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
-                      -exportPath ${{ github.workspace }}/build
+                      -exportPath ${{ github.workspace }}/build \
+                      | tee -a xcodebuild.log
 
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
