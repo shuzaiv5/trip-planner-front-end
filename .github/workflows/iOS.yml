@@ -33,6 +33,7 @@ jobs:
           ruby-version: '2.7'
 
       # Step 5: Install Bundler
+      - name: Install Bundler
         run: gem install bundler -v 2.4.22
 
       # Step 6: Install CocoaPods dependencies
