@@ -35,7 +35,7 @@ jobs:
         run: |
           sudo gem install cocoapods
           cd ${{ github.workspace }}/ConnectedToCulture/ios
-          pod install --repo-update  # Add --repo-update to ensure pods are up to date
+          pod install --repo-update
           pod --version
 
       - name: Set up Xcode
@@ -92,7 +92,8 @@ jobs:
                       PROVISIONING_PROFILE_SPECIFIER="ConnectedToCulture_C2C_ad_hoc" \
                       DEVELOPMENT_TEAM="24832U2HJT" \
                       PRODUCT_BUNDLE_IDENTIFIER="com.ConnectedToCulture.C2C" \
-                      OTHER_CODE_SIGN_FLAGS="--allowProvisioningUpdates"
+                      OTHER_CODE_SIGN_FLAGS="--allowProvisioningUpdates" \
+                      GCC_WARN_INHIBIT_ALL_WARNINGS=YES
           xcodebuild -exportArchive \
                       -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
                       -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
