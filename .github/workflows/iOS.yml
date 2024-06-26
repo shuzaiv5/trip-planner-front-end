@@ -35,7 +35,7 @@ jobs:
         run: |
           sudo gem install cocoapods
           cd ${{ github.workspace }}/ConnectedToCulture/ios
-          pod install
+          pod install --repo-update  # Add --repo-update to ensure pods are up to date
           pod --version
 
       - name: Set up Xcode
