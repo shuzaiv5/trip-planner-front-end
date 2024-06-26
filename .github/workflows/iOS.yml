@@ -21,7 +21,7 @@ jobs:
       - name: Install npm dependencies
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture
-          npm install
+          npm install 2>&1 | tee npm_install.log | grep -iE 'error|failed|exception'
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -29,14 +29,14 @@ jobs:
           ruby-version: '2.7'
 
       - name: Install Bundler
-        run: gem install bundler -v 2.4.22
+        run: gem install bundler -v 2.4.22 2>&1 | tee bundler_install.log | grep -iE 'error|failed|exception'
 
       - name: Install CocoaPods
         run: |
-          sudo gem install cocoapods
+          sudo gem install cocoapods 2>&1 | tee cocoapods_install.log | grep -iE 'error|failed|exception'
           cd ${{ github.workspace }}/ConnectedToCulture/ios
-          pod install --repo-update
-          pod --version
+          pod install --repo-update 2>&1 | tee pod_install.log | grep -iE 'error|failed|exception'
+          pod --version 2>&1 | tee pod_version.log | grep -iE 'error|failed|exception'
 
       - name: Set up Xcode
         run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
@@ -44,7 +44,7 @@ jobs:
       - name: List Xcode Schemes
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
-          xcodebuild -list
+          xcodebuild -list 2>&1 | tee xcode_schemes.log | grep -iE 'error|failed|exception'
 
       - name: Create Provisioning Profiles directory
         run: mkdir -p /Users/runner/Library/MobileDevice/Provisioning\ Profiles
@@ -53,34 +53,34 @@ jobs:
         env:
           PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
         run: |
-          echo "$PROVISIONING_PROFILE" | base64 --decode > /Users/runner/Library/MobileDevice/Provisioning\ Profiles/ConnectedToCulture_C2C_ad_hoc.mobileprovision
+          echo "$PROVISIONING_PROFILE" | base64 --decode > /Users/runner/Library/MobileDevice/Provisioning\ Profiles/ConnectedToCulture_C2C_ad_hoc.mobileprovision 2>&1 | tee provisioning_profile.log | grep -iE 'error|failed|exception'
 
       - name: Decode and Install Certificate
         env:
           CERTIFICATE: ${{ secrets.IOS_CERTIFICATE }}
           CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
         run: |
-          echo "$CERTIFICATE" | base64 --decode > certificate.p12
-          security import certificate.p12 -P "$CERTIFICATE_PASSWORD" -A
+          echo "$CERTIFICATE" | base64 --decode > certificate.p12 2>&1 | tee certificate_decode.log | grep -iE 'error|failed|exception'
+          security import certificate.p12 -P "$CERTIFICATE_PASSWORD" -A 2>&1 | tee certificate_import.log | grep -iE 'error|failed|exception'
 
       - name: Clean build cache
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
-          xcodebuild clean -workspace ConnectedToCulture.xcworkspace -scheme ConnectedToCulture -configuration Release
+          xcodebuild clean -workspace ConnectedToCulture.xcworkspace -scheme ConnectedToCulture -configuration Release 2>&1 | tee clean_build_cache.log | grep -iE 'error|failed|exception'
 
       - name: Ensure script has execute permission
         run: |
-          chmod +x ${{ github.workspace }}/ConnectedToCulture/ios/Pods/Target\ Support\ Files/Pods-ConnectedToCulture/Pods-ConnectedToCulture-frameworks.sh
+          chmod +x ${{ github.workspace }}/ConnectedToCulture/ios/Pods/Target\ Support\ Files/Pods-ConnectedToCulture/Pods-ConnectedToCulture-frameworks.sh 2>&1 | tee script_permission.log | grep -iE 'error|failed|exception'
 
       - name: Increment build number
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
-          agvtool new-version -all $(date +%Y%m%d%H%M)
+          agvtool new-version -all $(date +%Y%m%d%H%M) 2>&1 | tee increment_build_number.log | grep -iE 'error|failed|exception'
 
       - name: Build app
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
-          ls -alh
+          ls -alh 2>&1 | tee list_files.log | grep -iE 'error|failed|exception'
           xcodebuild -workspace ConnectedToCulture.xcworkspace \
                       -scheme ConnectedToCulture \
                       -sdk iphoneos \
@@ -93,11 +93,11 @@ jobs:
                       DEVELOPMENT_TEAM="24832U2HJT" \
                       PRODUCT_BUNDLE_IDENTIFIER="com.ConnectedToCulture.C2C" \
                       OTHER_CODE_SIGN_FLAGS="--allowProvisioningUpdates" \
-                      GCC_WARN_INHIBIT_ALL_WARNINGS=YES
+                      GCC_WARN_INHIBIT_ALL_WARNINGS=YES 2>&1 | tee build_app.log | grep -iE 'error|failed|exception'
           xcodebuild -exportArchive \
                       -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
                       -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
-                      -exportPath ${{ github.workspace }}/build
+                      -exportPath ${{ github.workspace }}/build 2>&1 | tee export_archive.log | grep -iE 'error|failed|exception'
 
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
