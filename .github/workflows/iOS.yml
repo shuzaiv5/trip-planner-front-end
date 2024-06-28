@@ -30,13 +30,18 @@ jobs:
           ruby-version: '2.7'
 
       - name: Install Bundler
-        run: gem install bundler
+        run: gem install bundler -v 2.3.26
 
       - name: Install CocoaPods
         run: |
           sudo gem install cocoapods
+
+      - name: Reinstall CocoaPods
+        run: |
           cd ConnectedToCulture/ios
+          rm -rf Pods
           pod install --repo-update
+          pod --version
 
       - name: Ensure scripts have execute permissions
         run: |
