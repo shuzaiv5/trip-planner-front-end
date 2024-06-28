@@ -52,17 +52,17 @@ jobs:
 
       - name: Decode and Install Provisioning Profile
         env:
-          PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
+          IOS_PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
         run: |
-          echo "$PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/ConnectedToCulture_C2C_ad_hoc.mobileprovision
+          echo "$IOS_PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/ConnectedToCulture_C2C_ad_hoc.mobileprovision
 
       - name: Decode and Install Certificate
         env:
-          CERTIFICATE: ${{ secrets.IOS_CERTIFICATE }}
-          CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+          IOS_CERTIFICATE: ${{ secrets.IOS_CERTIFICATE }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
         run: |
-          echo "$CERTIFICATE" | base64 --decode > certificate.p12
-          security import certificate.p12 -P "$CERTIFICATE_PASSWORD" -A
+          echo "$IOS_CERTIFICATE" | base64 --decode > certificate.p12
+          security import certificate.p12 -P "$IOS_CERTIFICATE_PASSWORD" -A
 
       - name: Clean Derived Data
         run: |
@@ -88,12 +88,12 @@ jobs:
                                         PROVISIONING_PROFILE_SPECIFIER="ConnectedToCulture_C2C_ad_hoc" \
                                         DEVELOPMENT_TEAM="24832U2HJT" \
                                         PRODUCT_BUNDLE_IDENTIFIER="com.ConnectedToCulture.C2C" \
-                                        | tee ${{ github.workspace }}/xcodebuild.log | xcpretty
+                                        > ${{ github.workspace }}/xcodebuild.log
           xcodebuild -exportArchive \
                      -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
                      -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
                      -exportPath ${{ github.workspace }}/build \
-                     | tee -a ${{ github.workspace }}/xcodebuild.log
+                     >> ${{ github.workspace }}/xcodebuild.log
 
       - name: Check generated files
         run: ls -alh ${{ github.workspace }}/build
