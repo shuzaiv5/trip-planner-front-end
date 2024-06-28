@@ -23,16 +23,19 @@ jobs:
           echo "Current Directory: $(pwd)"
           echo "Listing files in current directory:"
           ls -alh
+
       - name: Debug - List repository structure
         run: |
           echo "Listing files in repository root:"
           ls -alh ${{ github.workspace }}
           echo "Listing files in ConnectedToCulture directory:"
           ls -alh ${{ github.workspace }}/ConnectedToCulture
+
       - name: Install npm dependencies
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture
           npm install --verbose 2>&1 | tee npm_install.log
+
       - name: Display npm install log on failure
         if: failure()
         run: cat ${{ github.workspace }}/ConnectedToCulture/npm_install.log
@@ -51,6 +54,7 @@ jobs:
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           pod install --repo-update
           pod --version
+
       - name: Set up Xcode
         run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 
@@ -58,6 +62,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           xcodebuild -list
+
       - name: Create Provisioning Profiles directory
         run: mkdir -p /Users/runner/Library/MobileDevice/Provisioning\ Profiles
 
@@ -66,6 +71,7 @@ jobs:
           PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
         run: |
           echo "$PROVISIONING_PROFILE" | base64 --decode > /Users/runner/Library/MobileDevice/Provisioning\ Profiles/ConnectedToCulture_C2C_ad_hoc.mobileprovision
+
       - name: Decode and Install Certificate
         env:
           CERTIFICATE: ${{ secrets.IOS_CERTIFICATE }}
@@ -73,17 +79,21 @@ jobs:
         run: |
           echo "$CERTIFICATE" | base64 --decode > certificate.p12
           security import certificate.p12 -P "$CERTIFICATE_PASSWORD" -A
+
       - name: Clean build cache
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           xcodebuild clean -workspace ConnectedToCulture.xcworkspace -scheme ConnectedToCulture -configuration Release
+
       - name: Ensure script has execute permission
         run: |
           chmod +x ${{ github.workspace }}/ConnectedToCulture/ios/Pods/Target\ Support\ Files/Pods-ConnectedToCulture/Pods-ConnectedToCulture-frameworks.sh
+
       - name: Increment build number
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           agvtool new-version -all $(date +%Y%m%d%H%M)
+
       - name: Build app
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
@@ -102,16 +112,20 @@ jobs:
                       OTHER_CODE_SIGN_FLAGS="--allowProvisioningUpdates" \
                       GCC_WARN_INHIBIT_ALL_WARNINGS=YES \
                       | tee ${{ github.workspace }}/xcodebuild.log | xcpretty
-  continue-on-error: true
-
-- name: Upload xcodebuild.log
-  uses: actions/upload-artifact@v2
-  with:
-    name: xcodebuild-log
-    path: ${{ github.workspace }}/xcodebuild.log
+          xcodebuild -exportArchive \
+                      -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
+                      -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
+                      -exportPath ${{ github.workspace }}/build \
+                      | tee -a ${{ github.workspace }}/xcodebuild.log
 
       - name: Check generated files
         run: ls -alh ${{ github.workspace }}/build
+
+      - name: Upload xcodebuild.log as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: xcodebuild-log
+          path: ${{ github.workspace }}/xcodebuild.log
 
       - name: Set up Firebase CLI
         run: curl -sL https://firebase.tools | bash
