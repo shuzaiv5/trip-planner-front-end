@@ -95,12 +95,12 @@ jobs:
                                         -verbose \
                                         -allowProvisioningUpdates \
                                         OTHER_CODE_SIGN_FLAGS="--allowProvisioningUpdates" \
-                                        | tee ${{ github.workspace }}/xcodebuild.log | xcpretty
+                                        > ${{ github.workspace }}/xcodebuild.log
           xcodebuild -exportArchive \
                      -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
                      -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
                      -exportPath ${{ github.workspace }}/build \
-                     | tee -a ${{ github.workspace }}/xcodebuild.log
+                     >> ${{ github.workspace }}/xcodebuild.log
 
       - name: Check generated files
         run: ls -alh ${{ github.workspace }}/build
