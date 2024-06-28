@@ -55,6 +55,7 @@ jobs:
       - name: Reinstall CocoaPods
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
+          rm -rf Pods
           pod install --repo-update
           pod --version
 
@@ -92,25 +93,25 @@ jobs:
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           ls -alh
-          xcodebuild -workspace ConnectedToCulture.xcworkspace \
-                      -scheme ConnectedToCulture \
-                      -sdk iphoneos \
-                      -configuration Release \
-                      -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
-                      clean archive \
-                      CODE_SIGN_STYLE=Manual \
-                      CODE_SIGN_IDENTITY="Apple Distribution" \
-                      PROVISIONING_PROFILE_SPECIFIER="ConnectedToCulture_C2C_ad_hoc" \
-                      DEVELOPMENT_TEAM="24832U2HJT" \
-                      PRODUCT_BUNDLE_IDENTIFIER="com.ConnectedToCulture.C2C" \
-                      OTHER_CODE_SIGN_FLAGS="--allowProvisioningUpdates" \
-                      GCC_WARN_INHIBIT_ALL_WARNINGS=YES \
-                      | tee ${{ github.workspace }}/xcodebuild.log | xcpretty
-          xcodebuild -exportArchive \
-                      -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
-                      -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
-                      -exportPath ${{ github.workspace }}/build \
-                      | tee -a ${{ github.workspace }}/xcodebuild.log
+          set -o pipefail && xcodebuild -workspace ConnectedToCulture.xcworkspace \
+                                        -scheme ConnectedToCulture \
+                                        -sdk iphoneos \
+                                        -configuration Release \
+                                        -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
+                                        clean archive \
+                                        CODE_SIGN_STYLE=Manual \
+                                        CODE_SIGN_IDENTITY="Apple Distribution" \
+                                        PROVISIONING_PROFILE_SPECIFIER="ConnectedToCulture_C2C_ad_hoc" \
+                                        DEVELOPMENT_TEAM="24832U2HJT" \
+                                        PRODUCT_BUNDLE_IDENTIFIER="com.ConnectedToCulture.C2C" \
+                                        OTHER_CODE_SIGN_FLAGS="--allowProvisioningUpdates" \
+                                        GCC_WARN_INHIBIT_ALL_WARNINGS=YES \
+                                        | tee ${{ github.workspace }}/xcodebuild.log | xcpretty
+          set -o pipefail && xcodebuild -exportArchive \
+                                        -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
+                                        -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
+                                        -exportPath ${{ github.workspace }}/build \
+                                        | tee -a ${{ github.workspace }}/xcodebuild.log
 
       - name: Check generated files
         run: ls -alh ${{ github.workspace }}/build
