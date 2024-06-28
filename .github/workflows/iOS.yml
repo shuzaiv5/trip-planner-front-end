@@ -1,44 +1,125 @@
-name: iOS starter workflow
+name: CI for iOS
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-    name: Build and Test default scheme using any available iPhone simulator
     runs-on: macos-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set Default Scheme
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.14.0'
+
+      - name: Debug - List current directory
         run: |
-          scheme_list=$(xcodebuild -list -json | tr -d "\n")
-          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
-          echo $default | cat >default
-          echo Using default scheme: $default
-      - name: Build
+          echo "Current Directory: $(pwd)"
+          echo "Listing files in current directory:"
+          ls -alh
+      - name: Debug - List repository structure
+        run: |
+          echo "Listing files in repository root:"
+          ls -alh ${{ github.workspace }}
+          echo "Listing files in ConnectedToCulture directory:"
+          ls -alh ${{ github.workspace }}/ConnectedToCulture
+      - name: Install npm dependencies
+        run: |
+          cd ${{ github.workspace }}/ConnectedToCulture
+          npm install --verbose 2>&1 | tee npm_install.log
+      - name: Display npm install log on failure
+        if: failure()
+        run: cat ${{ github.workspace }}/ConnectedToCulture/npm_install.log
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+
+      - name: Install Bundler
+        run: gem install bundler -v 2.4.22
+
+      - name: Install CocoaPods
+        run: |
+          sudo gem install cocoapods
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
+          pod install --repo-update
+          pod --version
+      - name: Set up Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+      - name: List Xcode Schemes
+        run: |
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
+          xcodebuild -list
+      - name: Create Provisioning Profiles directory
+        run: mkdir -p /Users/runner/Library/MobileDevice/Provisioning\ Profiles
+
+      - name: Decode and Install Provisioning Profile
         env:
-          scheme: ${{ 'default' }}
-          platform: ${{ 'iOS Simulator' }}
+          PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
         run: |
-          # xcrun xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
-          device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
-          if [ $scheme = default ]; then scheme=$(cat default); fi
-          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
-          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild build-for-testing -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
-      - name: Test
+          echo "$PROVISIONING_PROFILE" | base64 --decode > /Users/runner/Library/MobileDevice/Provisioning\ Profiles/ConnectedToCulture_C2C_ad_hoc.mobileprovision
+      - name: Decode and Install Certificate
         env:
-          scheme: ${{ 'default' }}
-          platform: ${{ 'iOS Simulator' }}
+          CERTIFICATE: ${{ secrets.IOS_CERTIFICATE }}
+          CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
         run: |
-          # xcrun xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
-          device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
-          if [ $scheme = default ]; then scheme=$(cat default); fi
-          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
-          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild test-without-building -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
+          echo "$CERTIFICATE" | base64 --decode > certificate.p12
+          security import certificate.p12 -P "$CERTIFICATE_PASSWORD" -A
+      - name: Clean build cache
+        run: |
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
+          xcodebuild clean -workspace ConnectedToCulture.xcworkspace -scheme ConnectedToCulture -configuration Release
+      - name: Ensure script has execute permission
+        run: |
+          chmod +x ${{ github.workspace }}/ConnectedToCulture/ios/Pods/Target\ Support\ Files/Pods-ConnectedToCulture/Pods-ConnectedToCulture-frameworks.sh
+      - name: Increment build number
+        run: |
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
+          agvtool new-version -all $(date +%Y%m%d%H%M)
+      - name: Build app
+        run: |
+          cd ${{ github.workspace }}/ConnectedToCulture/ios
+          ls -alh
+          xcodebuild -workspace ConnectedToCulture.xcworkspace \
+                      -scheme ConnectedToCulture \
+                      -sdk iphoneos \
+                      -configuration Release \
+                      -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
+                      clean archive \
+                      CODE_SIGN_STYLE=Manual \
+                      CODE_SIGN_IDENTITY="Apple Distribution" \
+                      PROVISIONING_PROFILE_SPECIFIER="ConnectedToCulture_C2C_ad_hoc" \
+                      DEVELOPMENT_TEAM="24832U2HJT" \
+                      PRODUCT_BUNDLE_IDENTIFIER="com.ConnectedToCulture.C2C" \
+                      OTHER_CODE_SIGN_FLAGS="--allowProvisioningUpdates" \
+                      GCC_WARN_INHIBIT_ALL_WARNINGS=YES \
+                      | tee ${{ github.workspace }}/xcodebuild.log | xcpretty
+  continue-on-error: true
+
+- name: Upload xcodebuild.log
+  uses: actions/upload-artifact@v2
+  with:
+    name: xcodebuild-log
+    path: ${{ github.workspace }}/xcodebuild.log
+
+      - name: Check generated files
+        run: ls -alh ${{ github.workspace }}/build
+
+      - name: Set up Firebase CLI
+        run: curl -sL https://firebase.tools | bash
+
+      - name: Upload to Firebase App Distribution
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          firebase appdistribution:distribute ${{ github.workspace }}/build/ConnectedToCulture.ipa \
+            --app ${{ secrets.FIREBASE_IOS_APP_ID }} \
+            --groups testers
