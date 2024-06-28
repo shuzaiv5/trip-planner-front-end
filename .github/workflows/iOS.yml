@@ -11,34 +11,18 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20.14.0'
 
-      - name: Debug - List current directory
-        run: |
-          echo "Current Directory: $(pwd)"
-          echo "Listing files in current directory:"
-          ls -alh
-
-      - name: Debug - List repository structure
-        run: |
-          echo "Listing files in repository root:"
-          ls -alh ${{ github.workspace }}
-          echo "Listing files in ConnectedToCulture directory:"
-          ls -alh ${{ github.workspace }}/ConnectedToCulture
-
       - name: Install npm dependencies
         run: |
-          cd ${{ github.workspace }}/ConnectedToCulture
-          npm install --verbose 2>&1 | tee npm_install.log
-
-      - name: Display npm install log on failure
-        if: failure()
-        run: cat ${{ github.workspace }}/ConnectedToCulture/npm_install.log
+          cd ConnectedToCulture
+          npm install
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -46,31 +30,26 @@ jobs:
           ruby-version: '2.7'
 
       - name: Install Bundler
-        run: gem install bundler -v 2.4.22
+        run: gem install bundler
 
       - name: Install CocoaPods
         run: |
           sudo gem install cocoapods
-
-      - name: Reinstall CocoaPods
-        run: |
-          cd ${{ github.workspace }}/ConnectedToCulture/ios
-          rm -rf Pods
+          cd ConnectedToCulture/ios
           pod install --repo-update
-          pod --version
 
       - name: Ensure scripts have execute permissions
         run: |
-          find ${{ github.workspace }}/ConnectedToCulture/ios/Pods -name '*.sh' -exec chmod +x {} \;
+          find ConnectedToCulture/ios/Pods -name '*.sh' -exec chmod +x {} \;
 
       - name: Create Provisioning Profiles directory
-        run: mkdir -p /Users/runner/Library/MobileDevice/Provisioning\ Profiles
+        run: mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
 
       - name: Decode and Install Provisioning Profile
         env:
           PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
         run: |
-          echo "$PROVISIONING_PROFILE" | base64 --decode > /Users/runner/Library/MobileDevice/Provisioning\ Profiles/ConnectedToCulture_C2C_ad_hoc.mobileprovision
+          echo "$PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/ConnectedToCulture_C2C_ad_hoc.mobileprovision
 
       - name: Decode and Install Certificate
         env:
@@ -86,12 +65,12 @@ jobs:
 
       - name: Increment build number
         run: |
-          cd ${{ github.workspace }}/ConnectedToCulture/ios
+          cd ConnectedToCulture/ios
           agvtool new-version -all $(date +%Y%m%d%H%M)
 
       - name: Build app
         run: |
-          cd ${{ github.workspace }}/ConnectedToCulture/ios
+          cd ConnectedToCulture/ios
           ls -alh
           set -o pipefail && xcodebuild -workspace ConnectedToCulture.xcworkspace \
                                         -scheme ConnectedToCulture \
@@ -104,14 +83,12 @@ jobs:
                                         PROVISIONING_PROFILE_SPECIFIER="ConnectedToCulture_C2C_ad_hoc" \
                                         DEVELOPMENT_TEAM="24832U2HJT" \
                                         PRODUCT_BUNDLE_IDENTIFIER="com.ConnectedToCulture.C2C" \
-                                        OTHER_CODE_SIGN_FLAGS="--allowProvisioningUpdates" \
-                                        GCC_WARN_INHIBIT_ALL_WARNINGS=YES \
                                         | tee ${{ github.workspace }}/xcodebuild.log | xcpretty
-          set -o pipefail && xcodebuild -exportArchive \
-                                        -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
-                                        -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
-                                        -exportPath ${{ github.workspace }}/build \
-                                        | tee -a ${{ github.workspace }}/xcodebuild.log
+          xcodebuild -exportArchive \
+                     -archivePath ${{ github.workspace }}/build/ConnectedToCulture.xcarchive \
+                     -exportOptionsPlist ${{ github.workspace }}/ConnectedToCulture/ios/exportOptions.plist \
+                     -exportPath ${{ github.workspace }}/build \
+                     | tee -a ${{ github.workspace }}/xcodebuild.log
 
       - name: Check generated files
         run: ls -alh ${{ github.workspace }}/build
