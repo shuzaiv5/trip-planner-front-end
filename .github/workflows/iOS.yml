@@ -51,17 +51,16 @@ jobs:
       - name: Install CocoaPods
         run: |
           sudo gem install cocoapods
+
+      - name: Reinstall CocoaPods
+        run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
           pod install --repo-update
           pod --version
 
-      - name: Set up Xcode
-        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-
-      - name: List Xcode Schemes
+      - name: Ensure scripts have execute permissions
         run: |
-          cd ${{ github.workspace }}/ConnectedToCulture/ios
-          xcodebuild -list
+          find ${{ github.workspace }}/ConnectedToCulture/ios/Pods -name '*.sh' -exec chmod +x {} \;
 
       - name: Create Provisioning Profiles directory
         run: mkdir -p /Users/runner/Library/MobileDevice/Provisioning\ Profiles
@@ -80,20 +79,9 @@ jobs:
           echo "$CERTIFICATE" | base64 --decode > certificate.p12
           security import certificate.p12 -P "$CERTIFICATE_PASSWORD" -A
 
-      - name: Ensure scripts have execute permissions
-        run: |
-          find ${{ github.workspace }}/ConnectedToCulture/ios/Pods -name '*.sh' -exec chmod +x {} \;
-
-      - name: Reinstall CocoaPods
-        run: |
-          cd ${{ github.workspace }}/ConnectedToCulture/ios
-          rm -rf Pods
-          pod install --repo-update
-
       - name: Clean Derived Data
         run: |
           rm -rf ~/Library/Developer/Xcode/DerivedData
-          xcodebuild clean -workspace ConnectedToCulture.xcworkspace -scheme ConnectedToCulture -configuration Release
 
       - name: Increment build number
         run: |
