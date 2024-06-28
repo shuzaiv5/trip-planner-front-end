@@ -41,12 +41,10 @@ jobs:
         run: |
           sudo gem install cocoapods
 
-      - name: Reinstall CocoaPods
+      - name: Install CocoaPods dependencies
         run: |
           cd ConnectedToCulture/ios
-          rm -rf Pods
           pod install --repo-update
-          pod --version
 
       - name: Ensure scripts have execute permissions
         run: |
