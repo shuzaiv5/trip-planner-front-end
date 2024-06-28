@@ -80,14 +80,20 @@ jobs:
           echo "$CERTIFICATE" | base64 --decode > certificate.p12
           security import certificate.p12 -P "$CERTIFICATE_PASSWORD" -A
 
-      - name: Clean build cache
+      - name: Ensure scripts have execute permissions
+        run: |
+          find ${{ github.workspace }}/ConnectedToCulture/ios/Pods -name '*.sh' -exec chmod +x {} \;
+
+      - name: Reinstall CocoaPods
         run: |
           cd ${{ github.workspace }}/ConnectedToCulture/ios
-          xcodebuild clean -workspace ConnectedToCulture.xcworkspace -scheme ConnectedToCulture -configuration Release
+          rm -rf Pods
+          pod install --repo-update
 
-      - name: Ensure script has execute permission
+      - name: Clean Derived Data
         run: |
-          chmod +x ${{ github.workspace }}/ConnectedToCulture/ios/Pods/Target\ Support\ Files/Pods-ConnectedToCulture/Pods-ConnectedToCulture-frameworks.sh
+          rm -rf ~/Library/Developer/Xcode/DerivedData
+          xcodebuild clean -workspace ConnectedToCulture.xcworkspace -scheme ConnectedToCulture -configuration Release
 
       - name: Increment build number
         run: |
