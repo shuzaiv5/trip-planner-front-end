@@ -28,9 +28,7 @@ jobs:
           ruby-version: '3.0'  # 你可以根据需要调整Ruby版本
 
       - name: Install dependencies
-        run: |
-          cd ConnectedToCulture/ios
-          bundle install
+        run: bundle install
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -39,7 +37,7 @@ jobs:
 
       - name: Install npm dependencies
         run: |
-          cd ConnectedToCulture/ios
+          cd ConnectedToCulture
           npm install
 
       - name: Install CocoaPods
