@@ -22,6 +22,9 @@ jobs:
       - name: List files in current directory
         run: ls -la
 
+      - name: Ensure Gemfile exists
+        run: test -f ConnectedToCulture/Gemfile && echo "Gemfile exists" || echo "Gemfile does not exist"
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -29,6 +32,7 @@ jobs:
 
       - name: Install dependencies
         run: bundle install
+        working-directory: ConnectedToCulture
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -36,20 +40,17 @@ jobs:
           node-version: '20'
 
       - name: Install npm dependencies
-        run: |
-          cd ConnectedToCulture
-          npm install
+        run: npm install
+        working-directory: ConnectedToCulture
 
       - name: Install CocoaPods
-        run: |
-          cd ConnectedToCulture/ios
-          pod install
+        run: pod install
+        working-directory: ConnectedToCulture/ios
 
       - name: Build and sign app with Fastlane
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
-        run: |
-          cd ConnectedToCulture/ios
-          bundle exec fastlane build_and_sign
+        run: bundle exec fastlane build_and_sign
+        working-directory: ConnectedToCulture/ios
