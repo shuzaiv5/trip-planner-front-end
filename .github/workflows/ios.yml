@@ -29,7 +29,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd ios
+          ls -la
+          if [ -d "ConnectedToCulture/ios" ]; then
+            cd ConnectedToCulture/ios
+          elif [ -d "ios" ]; then
+            cd ios
+          fi
+          ls -la
           bundle install
 
       - name: Set up Node.js
@@ -39,12 +45,24 @@ jobs:
 
       - name: Install npm dependencies
         run: |
-          cd ios
+          ls -la
+          if [ -d "ConnectedToCulture/ios" ]; then
+            cd ConnectedToCulture/ios
+          elif [ -d "ios" ]; then
+            cd ios
+          fi
+          ls -la
           npm install
 
       - name: Install CocoaPods
         run: |
-          cd ios
+          ls -la
+          if [ -d "ConnectedToCulture/ios" ]; then
+            cd ConnectedToCulture/ios
+          elif [ -d "ios" ]; then
+            cd ios
+          fi
+          ls -la
           pod install
 
       - name: Build and sign app with Fastlane
@@ -53,5 +71,11 @@ jobs:
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
         run: |
-          cd ios
+          ls -la
+          if [ -d "ConnectedToCulture/ios" ]; then
+            cd ConnectedToCulture/ios
+          elif [ -d "ios" ]; then
+            cd ios
+          fi
+          ls -la
           bundle exec fastlane build_and_sign
