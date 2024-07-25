@@ -16,6 +16,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Print current directory
+        run: pwd
+
+      - name: List files in current directory
+        run: ls -la
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
