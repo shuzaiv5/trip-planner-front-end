@@ -20,15 +20,17 @@ platform :ios do
   desc "Build and sign the iOS app"
   lane :build_and_sign do
     match(
-      type: "adhoc",                 # 配置类型：adhoc, appstore, development, enterprise
-      readonly: false,               # 确保可以写入证书
+      type: "adhoc",                 # adhoc, appstore, development, enterprise
+      readonly: false,               
       app_identifier: ["com.ConnectedToCulture.C2C"],  # 你的应用标识符
-      username: "haibozhu16@gmail.com",                # 你的Apple ID
+      username: "haibozhu16@gmail.com",                # Apple ID
+      team_id: "24832U2HJT"
       git_url: "https://github.com/shuzaiv5/trip-planner-front-end.git"  # 用于存储证书和配置文件的Git仓库URL
     )
     build_app(
       scheme: "ConnectedToCulture",
       export_method: "ad-hoc",
+      export_team_id: "24832U2HJT" 
       export_options: {
         provisioningProfiles: {
           "com.ConnectedToCulture.C2C" => "ConnectedToCulture_AdHoc_Profile_717"
