@@ -54,12 +54,14 @@ jobs:
         run: pod install
         working-directory: ConnectedToCulture/ios
 
+      - name: Decode provisioning profile
+        run: echo "${{ secrets.IOS_PROVISIONING_PROFILE }}" | base64 --decode > ConnectedToCulture/ios/Provisioning_Profile.mobileprovision
+
       - name: Build and sign app with Fastlane
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
           FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
-          DEVELOPMENT_TEAM: ${{ secrets.DEVELOPMENT_TEAM }}  # 添加开发团队环境变量
         run: bundle exec fastlane build_and_sign
         working-directory: ConnectedToCulture/ios
