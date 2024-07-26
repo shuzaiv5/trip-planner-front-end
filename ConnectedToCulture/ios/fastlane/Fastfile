@@ -24,13 +24,13 @@ platform :ios do
       readonly: false,               
       app_identifier: ["com.ConnectedToCulture.C2C"],  # 你的应用标识符
       username: "haibozhu16@gmail.com",                # Apple ID
-      team_id: "24832U2HJT"
+      team_id: "24832U2HJT",
       git_url: "https://github.com/shuzaiv5/trip-planner-front-end.git"  # 用于存储证书和配置文件的Git仓库URL
     )
     build_app(
       scheme: "ConnectedToCulture",
       export_method: "ad-hoc",
-      export_team_id: "24832U2HJT" 
+      export_team_id: "24832U2HJT",
       export_options: {
         provisioningProfiles: {
           "com.ConnectedToCulture.C2C" => "ConnectedToCulture_AdHoc_Profile_717"
