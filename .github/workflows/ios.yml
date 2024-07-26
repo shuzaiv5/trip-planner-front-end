@@ -1,7 +1,10 @@
-name: Build and Sign iOS App
+name: iOS CI with Fastlane
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
@@ -10,25 +13,53 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.0.7'  # 使用最新的Ruby版本
+      - name: Print current directory
+        run: pwd
 
-    - name: Install dependencies
-      run: bundle install
+      - name: List files in current directory
+        run: ls -la
 
-    - name: Ensure Fastlane is installed
-      run: bundle exec fastlane --version
+      - name: Ensure Gemfile exists
+        run: test -f ConnectedToCulture/Gemfile && echo "Gemfile exists" || echo "Gemfile does not exist"
 
-    - name: Build and sign app with Fastlane
-      env:
-        MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-        FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-        MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
-        FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
-        DEVELOPMENT_TEAM: ${{ secrets.DEVELOPMENT_TEAM }}
-      run: bundle exec fastlane build_and_sign
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'  # 你可以根据需要调整Ruby版本
+
+      - name: Install Bundler
+        run: gem install bundler
+
+      - name: Install dependencies
+        run: bundle install
+        working-directory: ConnectedToCulture
+
+      - name: Verify Fastlane installation
+        run: bundle exec which fastlane
+        working-directory: ConnectedToCulture
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install npm dependencies
+        run: npm install
+        working-directory: ConnectedToCulture
+
+      - name: Install CocoaPods
+        run: pod install
+        working-directory: ConnectedToCulture/ios
+
+      - name: Build and sign app with Fastlane
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
+          DEVELOPMENT_TEAM: ${{ secrets.DEVELOPMENT_TEAM }}  # 添加开发团队环境变量
+        run: bundle exec fastlane build_and_sign
+        working-directory: ConnectedToCulture/ios
