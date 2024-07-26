@@ -8,16 +8,17 @@ platform :ios do
       readonly: false,               
       app_identifier: ["com.ConnectedToCulture.C2C"],  # 你的应用标识符
       username: "haibozhu16@gmail.com",                # Apple ID
-      team_id: ENV['DEVELOPMENT_TEAM'],                # 从环境变量读取开发团队ID
-      git_url: "https://github.com/shuzaiv5/trip-planner-front-end.git"  # 用于存储证书和配置文件的Git仓库URL
+      team_id: "24832U2HJT",
+      git_url: "https://github.com/shuzaiv5/trip-planner-front-end.git",  # 用于存储证书和配置文件的Git仓库URL
+      force_for_new_devices: true  # 强制为新设备创建provisioning profile
     )
     build_app(
       scheme: "ConnectedToCulture",
       export_method: "ad-hoc",
-      export_team_id: ENV['DEVELOPMENT_TEAM'],         # 从环境变量读取开发团队ID
+      export_team_id: "24832U2HJT",
       export_options: {
         provisioningProfiles: {
-          "com.ConnectedToCulture.C2C" => "ConnectedToCulture_AdHoc_Profile_717"
+          "com.ConnectedToCulture.C2C" => "ConnectedToCulture_AdHoc_Profile_726"
         }
       }
     )
