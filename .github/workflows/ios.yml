@@ -37,8 +37,8 @@ jobs:
         run: bundle install
         working-directory: ConnectedToCulture
 
-      - name: Ensure Fastlane is installed
-        run: bundle exec fastlane --version
+      - name: Verify Fastlane installation
+        run: bundle exec which fastlane
         working-directory: ConnectedToCulture
 
       - name: Set up Node.js
