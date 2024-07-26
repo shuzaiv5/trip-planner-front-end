@@ -30,8 +30,15 @@ jobs:
         with:
           ruby-version: '3.0'  # 你可以根据需要调整Ruby版本
 
+      - name: Install Bundler
+        run: gem install bundler
+
       - name: Install dependencies
         run: bundle install
+        working-directory: ConnectedToCulture
+
+      - name: Verify Fastlane installation
+        run: bundle exec which fastlane
         working-directory: ConnectedToCulture
 
       - name: Set up Node.js
@@ -52,5 +59,6 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
         run: bundle exec fastlane build_and_sign
         working-directory: ConnectedToCulture/ios
