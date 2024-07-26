@@ -30,6 +30,9 @@ jobs:
         with:
           ruby-version: '3.0'  # 你可以根据需要调整Ruby版本
 
+      - name: Install Bundler
+        run: gem install bundler
+
       - name: Install dependencies
         run: bundle install
         working-directory: ConnectedToCulture
