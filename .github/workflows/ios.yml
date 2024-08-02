@@ -16,20 +16,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Print current directory
-        run: pwd
-
-      - name: List files in current directory
-        run: ls -la
-
       - name: Ensure Gemfile exists
         run: test -f ConnectedToCulture/Gemfile && echo "Gemfile exists" || echo "Gemfile does not exist"
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.0'  # 你可以根据需要调整Ruby版本
-
+          ruby-version: '3.0'  
       - name: Install Bundler
         run: gem install bundler
 
