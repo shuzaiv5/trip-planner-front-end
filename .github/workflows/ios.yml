@@ -22,12 +22,13 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.0'  
+          ruby-version: '3.0'
+
       - name: Install Bundler
         run: gem install bundler
 
-      - name: Install dependencies
-        run: bundle install
+      - name: Install Ruby dependencies
+        run: bundle install --jobs 4 --retry 3
         working-directory: ConnectedToCulture
 
       - name: Verify Fastlane installation
@@ -44,7 +45,7 @@ jobs:
         working-directory: ConnectedToCulture
 
       - name: Install CocoaPods
-        run: pod install
+        run: pod install --repo-update
         working-directory: ConnectedToCulture/ios
 
       - name: Decode provisioning profile
