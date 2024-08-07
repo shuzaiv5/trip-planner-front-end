@@ -4,13 +4,13 @@ platform :ios do
   desc "Build and sign the iOS app"
   lane :build_and_sign do
     match(
-      type: "adhoc",                 # adhoc, appstore, development, enterprise
-      readonly: false,               
-      app_identifier: ["com.ConnectedToCulture.C2C"],  # 你的应用标识符
-      username: "haibozhu16@gmail.com",                # Apple ID
+      type: "adhoc",
+      readonly: false,
+      app_identifier: ["com.ConnectedToCulture.C2C"],
+      username: "haibozhu16@gmail.com",
       team_id: "24832U2HJT",
-      git_url: "https://github.com/shuzaiv5/trip-planner-front-end.git",  # 用于存储证书和配置文件的Git仓库URL
-      force_for_new_devices: true  # 强制为新设备创建provisioning profile
+      git_url: "https://github.com/shuzaiv5/trip-planner-front-end.git",
+      force_for_new_devices: true
     )
     build_app(
       scheme: "ConnectedToCulture",
